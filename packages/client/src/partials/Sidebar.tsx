@@ -186,6 +186,8 @@ function Sidebar({ sidebarOpen, setSidebarOpen }: any) {
                   </div>
                 </NavLink>
               </li>
+                        
+              <div style={{display: 'none'}}>
               {/* Analytics */}
               <li
                 className={`px-3 py-2 rounded-sm mb-0.5 last:mb-0 ${
@@ -644,6 +646,8 @@ function Sidebar({ sidebarOpen, setSidebarOpen }: any) {
                   </div>
                 </NavLink>
               </li>
+              </div>
+
               {/* Settings */}
               <SidebarLinkGroup activecondition={pathname.includes("settings")}>
                 {(handleClick: any, open: any) => {
@@ -910,12 +914,15 @@ function Sidebar({ sidebarOpen, setSidebarOpen }: any) {
                               </span>
                             </NavLink>
                           </li>
+                          
                         </ul>
                       </div>
                     </React.Fragment>
                   );
                 }}
               </SidebarLinkGroup>
+           
+           
             </ul>
           </div>
         </div>
