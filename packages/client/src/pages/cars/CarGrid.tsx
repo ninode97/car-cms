@@ -1,8 +1,5 @@
 import React, { useState } from "react";
 
-
-
-
 import { useContext } from "react";
 import { observer } from "mobx-react-lite";
 
@@ -15,6 +12,7 @@ import DashboardAvatars from "../../partials/dashboard/DashboardAvatars";
 import WelcomeBanner from "../../partials/dashboard/WelcomeBanner";
 import Header from "../../partials/Header";
 import Sidebar from "../../partials/Sidebar";
+import DataTable from "../../app/common/DataTable/DataTable";
 
 function CarGrid() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -62,8 +60,8 @@ function CarGrid() {
               </div>
 
               {/* Cards */}
-              <div className="grid grid-cols-12 gap-6">
-                    Car management
+              <div className="grid">
+                <DataTable />
               </div>
             </div>
           </main>
