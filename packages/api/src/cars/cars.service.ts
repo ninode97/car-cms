@@ -29,6 +29,9 @@ export class CarsService {
       cursor,
       where,
       orderBy,
+      include: {
+        model: true,
+      },
     });
   }
 

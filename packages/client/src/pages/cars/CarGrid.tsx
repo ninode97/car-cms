@@ -13,11 +13,53 @@ import WelcomeBanner from "../../partials/dashboard/WelcomeBanner";
 import Header from "../../partials/Header";
 import Sidebar from "../../partials/Sidebar";
 import DataTable from "../../app/common/DataTable/DataTable";
+import { useQuery } from "react-query";
 
+type CarFetchError = {
+  message: string;
+};
+
+type CarModel = {
+  id: number;
+  name: string;
+}
+type CarRecord = {
+  id: number;
+  plateCode: string;
+  model: CarModel
+};
+
+type CarResponse = {
+  isLoading: boolean;
+  error: CarFetchError;
+  data: CarRecord[];
+};
 function CarGrid() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const rootStore = useContext(RootStoreContext);
   const { commonStore } = rootStore;
+
+  const { isLoading, error, data } = useQuery<
+    boolean,
+    CarFetchError,
+    CarRecord[]
+  >("repoData", () =>
+    fetch("http://localhost:5000/cars")
+      .then((res) => res.json())
+      .then((data) => {
+        return data;
+      })
+      .catch((err) => err)
+  );
+
+  console.log({
+    isLoading,
+    error,
+    data,
+  });
+  // if (isLoading) return "Loading...";
+
+  // if (error) return "An error has occurred: " + error.message;
 
   return (
     <React.Fragment>
@@ -61,7 +103,7 @@ function CarGrid() {
 
               {/* Cards */}
               <div className="grid">
-                <DataTable />
+                <DataTable records={data}/>
               </div>
             </div>
           </main>

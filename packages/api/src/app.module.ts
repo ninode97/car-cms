@@ -7,12 +7,19 @@ import { UserModule } from './user/user.module';
 import { BrandModule } from './brand/brand.module';
 import { ModelModule } from './model/model.module';
 import { CompanyModule } from './company/company.module';
-import { AcountingModule } from './acounting/acounting.module';
 import { AccountingModule } from './accounting/accounting.module';
 import { CarHistoryModule } from './car-history/car-history.module';
 
 @Module({
-  imports: [CarsModule, UserModule, BrandModule, ModelModule, CompanyModule, AcountingModule, AccountingModule, CarHistoryModule],
+  imports: [
+    CarsModule,
+    UserModule,
+    BrandModule,
+    ModelModule,
+    CompanyModule,
+    AccountingModule,
+    CarHistoryModule,
+  ],
   controllers: [AppController],
   providers: [AppService, PrismaService],
 })
