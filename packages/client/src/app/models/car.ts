@@ -21,11 +21,19 @@ export type Car = {
   model: CarModel;
 };
 
+export type CarModelResponse = {
+  data: CarModel[];
+};
+
 export type CarModel = {
   id: number;
   name: string;
   brandId: number;
   Brand: CarBrand;
+};
+
+export type CarBrandResponse = {
+  data: CarBrand[];
 };
 
 export type CarBrand = {

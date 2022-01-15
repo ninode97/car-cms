@@ -1,5 +1,11 @@
 import axios, { AxiosResponse } from "axios";
-import { Car, CarsResponse } from "../models/car";
+import {
+  Car,
+  CarBrandResponse,
+  CarModelResponse,
+  CarsResponse,
+} from "../models/car";
+import { GetCompaniesResponse } from "../models/company";
 
 class Agent {
   constructor() {
@@ -75,6 +81,22 @@ const Car = {
     agent.get(`/car?skip=${skip}&take=${take}`),
 };
 
+const Brand = {
+  get: (): Promise<CarBrandResponse> => agent.get(`/brand`),
+};
+
+const Model = {
+  get: (id: number): Promise<CarModelResponse> =>
+    agent.get(`/brand/${id}/model`),
+};
+
+const Company = {
+  get: (): Promise<GetCompaniesResponse> => agent.get(`/company`),
+};
+
 export default {
   Car,
+  Brand,
+  Model,
+  Company,
 };
