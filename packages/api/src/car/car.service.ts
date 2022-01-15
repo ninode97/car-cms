@@ -4,7 +4,7 @@ import { User, Prisma, Car } from '@prisma/client';
 import { PrismaService } from 'src/prisma.service';
 
 @Injectable()
-export class CarsService {
+export class CarService {
   constructor(private prisma: PrismaService) {}
 
   async car(
@@ -30,7 +30,11 @@ export class CarsService {
       where,
       orderBy,
       include: {
-        model: true,
+        model: {
+          include: {
+            Brand: true,
+          },
+        },
       },
     });
   }

@@ -9,6 +9,7 @@
   "dependencies": {
     "@tailwindcss/forms": "^0.4.0",
     "api": "^4.2.0",
+    "axios": "^0.24.0",
     "chart.js": "^3.6.0",
     "chartjs-adapter-moment": "^1.0.0",
     "mobx": "^6.3.12",

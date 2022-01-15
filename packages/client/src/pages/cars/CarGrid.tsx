@@ -14,52 +14,22 @@ import Header from "../../partials/Header";
 import Sidebar from "../../partials/Sidebar";
 import DataTable from "../../app/common/DataTable/DataTable";
 import { useQuery } from "react-query";
+import api from "../../app/api/agent";
+import { Car } from "../../app/models/car";
 
-type CarFetchError = {
-  message: string;
-};
 
-type CarModel = {
-  id: number;
-  name: string;
-}
-type CarRecord = {
-  id: number;
-  plateCode: string;
-  model: CarModel
-};
-
-type CarResponse = {
-  isLoading: boolean;
-  error: CarFetchError;
-  data: CarRecord[];
-};
 function CarGrid() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const rootStore = useContext(RootStoreContext);
   const { commonStore } = rootStore;
 
-  const { isLoading, error, data } = useQuery<
-    boolean,
-    CarFetchError,
-    CarRecord[]
-  >("repoData", () =>
-    fetch("http://localhost:5000/cars")
-      .then((res) => res.json())
-      .then((data) => {
-        return data;
-      })
-      .catch((err) => err)
+  const { data, isLoading, error } = useQuery<any, any, Car[], any>(
+    ["cars"],
+    () => api.Car.get()
   );
+  if (isLoading) return "Loading...";
 
-  console.log({
-    isLoading,
-    error,
-    data,
-  });
-  // if (isLoading) return "Loading...";
-
-  // if (error) return "An error has occurred: " + error.message;
+  if (error) return "An error has occurred: " + error && error.message;
 
   return (
     <React.Fragment>
@@ -103,7 +73,77 @@ function CarGrid() {
 
               {/* Cards */}
               <div className="grid">
-                <DataTable records={data}/>
+                <div className="flex flex-col">
+                  <div className="overflow-x-auto sm:-mx-6 lg:-mx-8">
+                    <div className="inline-block py-2 min-w-full sm:px-6 lg:px-8">
+                      <div className="overflow-hidden shadow-md sm:rounded-lg">
+                        <table className="min-w-full">
+                          <thead className="bg-gray-100 dark:bg-gray-700">
+                            <tr>
+                              <th
+                                scope="col"
+                                className="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400"
+                              >
+                                Plate
+                              </th>
+                              <th
+                                scope="col"
+                                className="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400"
+                              >
+                                Brand
+                              </th>
+                              <th
+                                scope="col"
+                                className="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400"
+                              >
+                                Year
+                              </th>
+                              <th
+                                scope="col"
+                                className="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400"
+                              >
+                                Tech
+                              </th>
+                              <th scope="col" className="relative py-3 px-6">
+                                <span className="sr-only">Edit</span>
+                              </th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {data &&
+                              data.map((car) => (
+                                <tr className="odd:bg-white even:bg-gray-50 border-b odd:dark:bg-gray-800 even:dark:bg-gray-700 dark:border-gray-600">
+                                  <td className="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                    {car.plateCode}
+                                  </td>
+                                  <td className="py-4 px-6 text-sm text-gray-500 whitespace-nowrap dark:text-gray-400">
+                                    {car.model.Brand.name} {car.model.name}
+                                  </td>
+                                  <td className="py-4 px-6 text-sm text-gray-500 whitespace-nowrap dark:text-gray-400">
+                                    {car.year}
+                                  </td>
+                                  <td className="py-4 px-6 text-sm text-gray-500 whitespace-nowrap dark:text-gray-400">
+                                    {car.year}
+                                  </td>
+                                  <td className="py-4 px-6 text-sm text-gray-500 whitespace-nowrap dark:text-gray-400">
+                                    {car.technicalInspectionExpiresOn.getFullYear()}/{car.technicalInspectionExpiresOn.getUTCMonth()}/{car.technicalInspectionExpiresOn.getUTCDate()}
+                                  </td>
+                                  <td className="py-4 px-6 text-sm font-medium text-right whitespace-nowrap">
+                                    <a
+                                      href="#"
+                                      className="text-blue-600 hover:text-blue-900 dark:text-blue-500 dark:hover:underline"
+                                    >
+                                      Edit
+                                    </a>
+                                  </td>
+                                </tr>
+                              ))}
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </main>
