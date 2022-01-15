@@ -1,10 +1,8 @@
 import { observer } from "mobx-react-lite";
-import React, { useContext, useEffect, useState } from "react";
-import { Routes, Route, useLocation, useRoutes } from "react-router-dom";
+import { useContext, useEffect } from "react";
+import { useLocation, useRoutes } from "react-router-dom";
 import routes from "./app/routes";
 import { RootStoreContext } from "./app/stores/rootStore";
-import Dashboard from "./pages/Dashboard";
-import Login from "./pages/Login";
 
 function App() {
   const rootStore = useContext(RootStoreContext);

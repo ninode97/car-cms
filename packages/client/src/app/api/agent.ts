@@ -1,5 +1,5 @@
 import axios, { AxiosResponse } from "axios";
-import { Car } from "../models/car";
+import { Car, CarsResponse } from "../models/car";
 
 class Agent {
   constructor() {
@@ -71,7 +71,8 @@ class Agent {
 const agent = new Agent();
 
 const Car = {
-  get: (): Promise<Car[]> => agent.get("/car"),
+  get: (skip = 0, take = 10): Promise<CarsResponse> =>
+    agent.get(`/car?skip=${skip}&take=${take}`),
 };
 
 export default {

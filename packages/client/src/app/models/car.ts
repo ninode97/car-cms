@@ -1,3 +1,10 @@
+import { PaginationProps } from "./shared";
+
+export interface CarsRequest extends PaginationProps {}
+export interface CarsResponse extends PaginationProps {
+  data: Car[];
+}
+
 export type Car = {
   id: number;
   plateCode: string;
@@ -6,11 +13,11 @@ export type Car = {
   companyId: number;
   modelId: number;
   year: number;
-  acquiredDate: Date;
-  insuranceValidFrom: Date;
-  insuranceExpiresOn: Date;
-  technicalInspectionValidFrom: Date;
-  technicalInspectionExpiresOn: Date;
+  acquiredDate: string;
+  insuranceValidFrom: string;
+  insuranceExpiresOn: string;
+  technicalInspectionValidFrom: string;
+  technicalInspectionExpiresOn: string;
   model: CarModel;
 };
 

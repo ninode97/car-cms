@@ -28,6 +28,7 @@ export default class CommonStore {
 
   @observable token: string | null = window.localStorage.getItem("accessToken");
   @observable isLoading = true;
+  @observable sidebarOpen = true;
 
   @computed get isLoggedIn() {
     return !!this.token;
@@ -41,5 +42,9 @@ export default class CommonStore {
   @action clearToken = () => {
     localStorage.removeItem("accessToken");
     this.token = null;
+  };
+
+  @action setSidebarOpen = (state: boolean) => {
+    this.sidebarOpen = state;
   };
 }

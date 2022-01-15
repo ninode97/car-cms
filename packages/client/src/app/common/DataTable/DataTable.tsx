@@ -83,7 +83,7 @@ const DataTable: React.FC<DataTableProps> = ({ records }) => {
           </div>
         </div>
       </div>
-    </div>
+    </div> 
   );
 };
 

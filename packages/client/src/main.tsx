@@ -3,6 +3,7 @@ import ReactDOM from "react-dom";
 import App from "./App";
 import { BrowserRouter } from "react-router-dom";
 import "./css/style.scss";
+import "react-datetime/css/react-datetime.css";
 import AppLoader from "./app/common/AppLoader";
 import { useQuery, QueryClient, QueryClientProvider } from "react-query";
 
