@@ -4,6 +4,7 @@ import { CarService } from './car.service';
 import { Car as CarModel } from '@prisma/client';
 import { GetCarsRequestDto } from './dto/get-cars-request.dto';
 import { GetCarsResponseDto } from './dto/get-cars-response.dto';
+import { PostCarRequestDto } from './dto/post-car-request.dto';
 
 @Controller('car')
 export class CarController {
@@ -21,7 +22,7 @@ export class CarController {
   }
 
   @Post()
-  createCar(@Body() car: Partial<CarModel>) {
-    console.log(car);
+  createCar(@Body() dto: PostCarRequestDto) {
+    return this.carService.createCar(dto);
   }
 }

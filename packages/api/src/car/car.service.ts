@@ -1,7 +1,12 @@
-import { Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  InternalServerErrorException,
+} from '@nestjs/common';
 
 import { User, Prisma, Car } from '@prisma/client';
 import { PrismaService } from 'src/prisma.service';
+import { PostCarRequestDto } from './dto/post-car-request.dto';
 
 @Injectable()
 export class CarService {
@@ -39,10 +44,45 @@ export class CarService {
     });
   }
 
-  async createCar(data: Prisma.CarCreateInput): Promise<Car> {
-    return this.prisma.car.create({
-      data,
+  async createCar(data: PostCarRequestDto): Promise<Car> {
+    const user = await this.prisma.user.findFirst({
+      where: {
+        id: 1,
+      },
     });
+    const model = await this.prisma.model.findFirst({
+      where: {
+        id: data.modelId,
+      },
+    });
+    const company = await this.prisma.company.findFirst({
+      where: {
+        id: data.companyId,
+      },
+    });
+
+    try {
+      return await this.prisma.car.create({
+        data: {
+          userId: user.id,
+          companyId: company.id,
+          modelId: model.id,
+          plateCode: data.plateCode,
+          vinCode: data.vinCode,
+          year: data.year,
+          acquiredDate: data.acquiredDate,
+          insuranceValidFrom: data.insuranceValidFrom,
+          insuranceExpiresOn: data.insuranceExpiresOn,
+          technicalInspectionValidFrom: data.technicalInspectionValidFrom,
+          technicalInspectionExpiresOn: data.technicalInspectionExpiresOn,
+        },
+      });
+    } catch (error) {
+      if (error.code === 'P2002') {
+        throw new BadRequestException(error);
+      }
+      throw new InternalServerErrorException('');
+    }
   }
 
   async updateCar(params: {
