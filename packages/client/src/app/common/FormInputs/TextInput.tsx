@@ -4,8 +4,16 @@ type TextInputProps = {
   label: string;
   name: string;
   placeHolder: string;
+  value: string;
+  onChange: (e: any) => void;
 };
-const TextInput: React.FC<TextInputProps> = ({ label, name, placeHolder }) => {
+const TextInput: React.FC<TextInputProps> = ({
+  label,
+  name,
+  placeHolder,
+  value,
+  onChange,
+}) => {
   return (
     <div className="col-span-3 sm:col-span-2">
       <label htmlFor={name} className="block text-sm font-medium text-gray-700">
@@ -13,6 +21,8 @@ const TextInput: React.FC<TextInputProps> = ({ label, name, placeHolder }) => {
       </label>
       <div className="mt-1 flex rounded-md shadow-sm">
         <input
+          onChange={onChange}
+          value={value}
           type="text"
           name={name}
           id={name}

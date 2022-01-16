@@ -1,16 +1,22 @@
-import React, { useState } from "react";
-import { useQuery } from "react-query";
-import { CarBrand, CarModelResponse } from "../../models/car";
-import api from "../../api/agent";
+import { observer } from "mobx-react-lite";
+import React, { useContext, useEffect, useState } from "react";
+import { CarBrand } from "../../models/car";
+import { RootStoreContext } from "../../stores/rootStore";
 import BrandModelSelector from "./BrandModelSelector";
 
 type BrandSelectorProps = {
+  brandModelValue: number | string;
+  onBrandModelChange: (e: any) => void;
   brands: CarBrand[];
 };
 
-const BrandSelector: React.FC<BrandSelectorProps> = ({ brands }) => {
-  const [brand, setBrand] = useState<string>("------");
-
+const BrandSelector: React.FC<BrandSelectorProps> = ({
+  brands,
+  brandModelValue,
+  onBrandModelChange,
+}) => {
+  const rootStore = useContext(RootStoreContext);
+  const { carsStore } = rootStore;
   return (
     <React.Fragment>
       <div className="col-span-3 sm:col-span-2">
@@ -23,11 +29,13 @@ const BrandSelector: React.FC<BrandSelectorProps> = ({ brands }) => {
         <div className="mt-1 flex rounded-md shadow-sm">
           <select
             name="brandId"
-            value={brand}
-            onChange={(e) => setBrand(e.target.value)}
+            value={carsStore.brand}
+            onChange={(e) => {
+              carsStore.onBrandChange(e);
+            }}
             className="focus:ring-indigo-500 focus:border-indigo-500 flex-1 block w-full rounded-none rounded-r-md sm:text-sm border-gray-300"
           >
-            <option>------</option>
+            <option value={-1}>------</option>
             {brands.map((b) => (
               <option key={b.id} value={b.id}>
                 {b.name}
@@ -36,11 +44,9 @@ const BrandSelector: React.FC<BrandSelectorProps> = ({ brands }) => {
           </select>
         </div>
       </div>
-      {brand && brand !== "------" && (
-        <BrandModelSelector brandId={parseInt(brand)} />
-      )}
+      <BrandModelSelector />
     </React.Fragment>
   );
 };
 
-export default BrandSelector;
+export default observer(BrandSelector);

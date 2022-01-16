@@ -5,6 +5,19 @@ export interface CarsResponse extends PaginationProps {
   data: Car[];
 }
 
+export type PostCar = {
+  plateCode: string;
+  vinCode: string;
+  companyId: number;
+  modelId: number;
+  year: number;
+  acquiredDate: string;
+  insuranceValidFrom: string;
+  insuranceExpiresOn: string;
+  technicalInspectionValidFrom: string;
+  technicalInspectionExpiresOn: string;
+};
+
 export type Car = {
   id: number;
   plateCode: string;

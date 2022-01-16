@@ -3,7 +3,15 @@ import { useQuery } from "react-query";
 import api from "../../api/agent";
 import { GetCompaniesResponse } from "../../models/company";
 
-const CompanySelector = () => {
+type CompanySelectorProps = {
+  value: string;
+  onChange: (e: any) => void;
+};
+
+const CompanySelector: React.FC<CompanySelectorProps> = ({
+  value,
+  onChange,
+}) => {
   const companies = useQuery<any, any, GetCompaniesResponse, any>(
     ["companies"],
     () => api.Company.get()
@@ -20,6 +28,8 @@ const CompanySelector = () => {
         </label>
         <div className="mt-1 flex rounded-md shadow-sm">
           <select
+            onChange={onChange}
+            value={value}
             name="companyId"
             className="focus:ring-indigo-500 focus:border-indigo-500 flex-1 block w-full rounded-none rounded-r-md sm:text-sm border-gray-300"
           >

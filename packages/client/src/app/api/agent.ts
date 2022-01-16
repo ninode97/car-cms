@@ -4,6 +4,7 @@ import {
   CarBrandResponse,
   CarModelResponse,
   CarsResponse,
+  PostCar,
 } from "../models/car";
 import { GetCompaniesResponse } from "../models/company";
 
@@ -79,6 +80,7 @@ const agent = new Agent();
 const Car = {
   get: (skip = 0, take = 10): Promise<CarsResponse> =>
     agent.get(`/car?skip=${skip}&take=${take}`),
+  post: (car: PostCar) => agent.post("/car", car),
 };
 
 const Brand = {
