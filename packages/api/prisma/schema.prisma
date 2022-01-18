@@ -29,16 +29,17 @@ model Model {
 }
 
 model User {
-  id        Int       @id @default(autoincrement())
-  email     String    @unique
-  name      String
-  surname   String
-  birthdate DateTime
-  isBlocked Boolean   @default(false)
-  Company   Company[]
-  Car       Car[]
-  Brand     Brand[]
-  Model     Model[]
+  id         Int          @id @default(autoincrement())
+  email      String       @unique
+  name       String
+  surname    String
+  birthdate  DateTime
+  isBlocked  Boolean      @default(false)
+  Company    Company[]
+  Car        Car[]
+  Brand      Brand[]
+  Model      Model[]
+  CarHistory CarHistory[]
 }
 
 model Company {
@@ -50,14 +51,14 @@ model Company {
 }
 
 model Car {
-  id                           Int      @id @default(autoincrement())
+  id                           Int          @id @default(autoincrement())
   plateCode                    String
-  vinCode                      String   @unique
-  addedBy                      User     @relation(fields: [userId], references: [id])
+  vinCode                      String       @unique
+  addedBy                      User         @relation(fields: [userId], references: [id])
   userId                       Int
-  ownedByCompany               Company  @relation(fields: [companyId], references: [id])
+  ownedByCompany               Company      @relation(fields: [companyId], references: [id])
   companyId                    Int
-  model                        Model    @relation(fields: [modelId], references: [id])
+  model                        Model        @relation(fields: [modelId], references: [id])
   modelId                      Int
   year                         Int
   acquiredDate                 DateTime
@@ -65,8 +66,27 @@ model Car {
   insuranceExpiresOn           DateTime
   technicalInspectionValidFrom DateTime
   technicalInspectionExpiresOn DateTime
+  CarHistory                   CarHistory[]
 }
 
-model CodeForAccounting{
-  code String @unique
+model CarHistory {
+  id                Int               @id @default(autoincrement())
+  car               Car               @relation(fields: [carId], references: [id])
+  carId             Int
+  createdAt         DateTime
+  createdBy         User              @relation(fields: [userId], references: [id])
+  userId            Int
+  codeForAccounting CodeForAccounting @relation(fields: [code], references: [code])
+  code              String
+  price             Decimal           @db.Money
+  billCode          String
+  serviceCompany    String
+  serviceName       String
+  productName       String
+
+}
+
+model CodeForAccounting {
+  code       String       @unique
+  CarHistory CarHistory[]
 }
