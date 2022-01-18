@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useContext } from "react";
 import { observer } from "mobx-react-lite";
 
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { RootStoreContext } from "../../app/stores/rootStore";
 import { useQuery } from "react-query";
 import api from "../../app/api/agent";
@@ -15,6 +15,7 @@ function CarGrid() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const rootStore = useContext(RootStoreContext);
   const { commonStore } = rootStore;
+  const navigate = useNavigate();
 
   const { data, isLoading, error } = useQuery<any, any, CarsResponse, any>(
     ["cars"],
@@ -72,7 +73,7 @@ function CarGrid() {
                   <tbody>
                     {data &&
                       data.data.map((car) => (
-                        <tr className="odd:bg-white even:bg-gray-50 border-b odd:dark:bg-gray-800 even:dark:bg-gray-700 dark:border-gray-600 hover:bg-indigo-100 cursor-pointer">
+                        <tr onClick={() => navigate(`/cars/${car.id}`)} className="odd:bg-white even:bg-gray-50 border-b odd:dark:bg-gray-800 even:dark:bg-gray-700 dark:border-gray-600 hover:bg-indigo-100 cursor-pointer">
                           <td className="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white">
                             {car.plateCode}
                           </td>
@@ -89,12 +90,9 @@ function CarGrid() {
                             {formatDateString(car.insuranceExpiresOn)}
                           </td>
                           <td className="py-4 px-6 text-sm font-medium text-right whitespace-nowrap">
-                            <a
-                              href="#"
-                              className="text-blue-600 hover:text-blue-900 dark:text-blue-500 dark:hover:underline"
-                            >
+                            <div className="text-blue-600 hover:text-blue-900 dark:text-blue-500 dark:hover:underline">
                               Inspect
-                            </a>
+                            </div>
                           </td>
                         </tr>
                       ))}

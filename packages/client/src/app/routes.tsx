@@ -1,7 +1,9 @@
 import { Navigate, Outlet } from "react-router-dom";
 import AddCar from "../pages/cars/AddCar";
 import CarGrid from "../pages/cars/CarGrid";
+import InspectCar from "../pages/cars/InspectCar";
 import Dashboard from "../pages/Dashboard";
+import HistoryFeed from "../pages/feed/HistoryFeed";
 import Login from "../pages/Login";
 
 const getRouteElement = (element: JSX.Element, isLoggedIn: boolean) => {
@@ -19,6 +21,14 @@ const routes = (isLoggedIn: boolean) => [
   {
     path: "/cars/add",
     element: getRouteElement(<AddCar />, isLoggedIn),
+  },
+  {
+    path: "/cars/:carId",
+    element: getRouteElement(<InspectCar />, isLoggedIn),
+  },
+  {
+    path: "/feed",
+    element: getRouteElement(<HistoryFeed />, isLoggedIn),
   },
   // {
   //   path: '/app',
