@@ -7,7 +7,7 @@ import { RootStoreContext } from "../../app/stores/rootStore";
 import { InspectPageViewsEnum } from "../../app/stores/carsStore";
 import CarHistoryTimeline, { TimelineDate } from "./CarHistoryTimeline";
 import { observer } from "mobx-react-lite";
-import { first, groupBy, groupBy as rowGrouper } from "lodash";
+import { first, groupBy } from "lodash";
 import currency from "currency.js";
 
 // const columns = [
@@ -182,7 +182,7 @@ const InspectCar = () => {
         className="h-screen"
         columns={columns}
         rows={rows}
-        rowGrouper={rowGrouper}
+        rowGrouper={groupBy}
         groupBy={["createdAt"]}
         expandedGroupIds={expandedGroupIds}
         onExpandedGroupIdsChange={setExpandedGroupIds}

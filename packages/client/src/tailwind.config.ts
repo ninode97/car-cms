@@ -1,8 +1,6 @@
-import * as colors from "tailwindcss/colors";
-import * as plugin from "tailwindcss/plugin";
-import * as forms from "@tailwindcss/forms";
-
-const pluginLegacy = plugin as any;
+import colors from "tailwindcss/colors";
+import plugin from "tailwindcss/plugin";
+import forms from "@tailwindcss/forms";
 
 type variantProps = {
   modifySelectors: (cb: (data: any) => void) => any;
@@ -85,7 +83,7 @@ export default {
     // eslint-disable-next-line global-require
     forms,
     // add custom variant for expanding sidebar
-    pluginLegacy(({ addVariant, e }: any) => {
+    plugin(({ addVariant, e }: any) => {
       addVariant(
         "sidebar-expanded",
         ({ modifySelectors, separator }: variantProps) => {
