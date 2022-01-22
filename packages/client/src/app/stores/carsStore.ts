@@ -1,7 +1,12 @@
 import { RootStore } from "./rootStore";
 import { action, makeAutoObservable, observable } from "mobx";
 import api from "../api/agent";
-import format from 'date-fns/format';
+import format from "date-fns/format";
+
+export enum InspectPageViewsEnum {
+  TABLE = "table",
+  TIMELINE = "timeline",
+}
 
 type NewCar = {
   plateCode: string;
@@ -22,6 +27,10 @@ export default class CarsStore {
     this.rootStore = rootStore;
     makeAutoObservable(this);
   }
+
+  @observable carPageState = {
+    inspectPageDefaultView: InspectPageViewsEnum.TABLE,
+  };
 
   @observable brand: number = -1;
   @observable
@@ -103,7 +112,7 @@ export default class CarsStore {
           this.newCar.technicalInspectionValidFrom.toISOString(),
         technicalInspectionExpiresOn:
           this.newCar.technicalInspectionExpiresOn.toISOString(),
-      })
+      });
       const data = await api.Car.post({
         plateCode: this.newCar.plateCode,
         vinCode: this.newCar.vinCode,
@@ -118,12 +127,13 @@ export default class CarsStore {
         technicalInspectionExpiresOn:
           this.newCar.technicalInspectionExpiresOn.toISOString(),
       });
-    } catch (error) {
-
-    }
+    } catch (error) {}
   }
 
-  @action validateAddCarForm() {
+  @action validateAddCarForm() {}
 
-  }
+  @action changeInspectCarView = (view: InspectPageViewsEnum) => {
+    console.log("clicked");
+    this.carPageState.inspectPageDefaultView = view;
+  };
 }
