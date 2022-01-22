@@ -10,7 +10,7 @@ import { GetCompaniesResponse } from "../models/company";
 
 class Agent {
   constructor() {
-    axios.defaults.baseURL = "http://127.0.0.1:5000";
+    axios.defaults.baseURL = "http://164.92.251.161:5000";
     this.registerRequestInterceptors();
     this.registerResponseInterceptors();
   }
