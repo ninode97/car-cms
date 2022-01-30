@@ -6,6 +6,7 @@ import {
   computed,
   makeAutoObservable,
 } from "mobx";
+import agent from "../api/agent";
 
 export default class CommonStore {
   rootStore: RootStore;
@@ -46,5 +47,15 @@ export default class CommonStore {
 
   @action setSidebarOpen = (state: boolean) => {
     this.sidebarOpen = state;
+  };
+
+  @action login = async (e: any, email: string, password: string) => {
+    e && e.preventDefault();
+    try {
+      const r = await agent.General.login({ email, password });
+      this.setToken("a");
+    } catch (error) {
+      console.error(error);
+    }
   };
 }

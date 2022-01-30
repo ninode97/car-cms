@@ -1,11 +1,17 @@
 import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
+import * as cookieParser from 'cookie-parser';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
-    cors: true,
+    cors: {
+      origin: 'http://localhost:3000',
+      credentials: true,
+    },
   });
+  app.use(cookieParser());
+
   const env = process.env.NODE_ENV;
   const isProduction = env == 'production';
 

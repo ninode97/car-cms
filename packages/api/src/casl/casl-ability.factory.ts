@@ -6,7 +6,18 @@ import {
   InferSubjects,
 } from '@casl/ability';
 import { Injectable } from '@nestjs/common';
-import { User, Car } from '@prisma/client';
+import {
+  User,
+  Car,
+  Brand,
+  CarHistory,
+  CodeForAccounting,
+  Company,
+  Model,
+  UserRole,
+} from '@prisma/client';
+import { PrismaAbility, Subjects } from '@casl/prisma';
+import { UserRoleEnumeration } from 'src/user/enums/user-role.enum';
 
 export enum Action {
   Manage = 'manage',
@@ -16,30 +27,39 @@ export enum Action {
   Delete = 'delete',
 }
 
-type Subjects = InferSubjects<User | Car> | 'all';
+//type PrismaModels =
+//type Subjects = InferSubjects<User | Car> | 'all';
 
-export type AppAbility = Ability<[Action, Subjects]>;
+//export type AppAbility = Ability<[Action, Subjects]>;
+
+type PrismaSubjects = Subjects<{
+  User: User;
+  UserRole: UserRole;
+  Car: Car;
+  CarHistory: CarHistory;
+  Brand: Brand;
+  Model: Model;
+  CodeForAccounting: CodeForAccounting;
+  Company: Company;
+}>;
+
+export type PrismaAppAbility = PrismaAbility<[string, PrismaSubjects]>;
+
+export const AppAbility = PrismaAbility as AbilityClass<PrismaAppAbility>;
 
 @Injectable()
 export class CaslAbilityFactory {
   createForUser(user: User) {
-    const { can, cannot, build } = new AbilityBuilder<
-      Ability<[Action, Subjects]>
-    >(Ability as AbilityClass<AppAbility>);
+    const { can, cannot, build } = new AbilityBuilder(AppAbility);
 
-    // if (user.isAdmin) {
-    //   can(Action.Manage, 'all'); // read-write access to everything
-    // } else {
-    //   can(Action.Read, 'all'); // read-only access to everything
-    // }
-
-    // can(Action.Update, Car, { authorId: user.id });
-    // cannot(Action.Delete, Car, { isPublished: true });
+    if (user.userRoleId === UserRoleEnumeration.REGULAR) {
+      cannot(Action.Manage, 'CarHistory');
+    }
 
     return build({
       // Read https://casl.js.org/v5/en/guide/subject-type-detection#use-classes-as-subject-types for details
       detectSubjectType: (item) =>
-        item.constructor as unknown as ExtractSubjectType<Subjects>,
+        item.constructor as unknown as ExtractSubjectType<PrismaSubjects>,
     });
   }
 }

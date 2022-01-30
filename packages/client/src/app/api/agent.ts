@@ -7,28 +7,47 @@ import {
   PostCar,
 } from "../models/car";
 import { GetCompaniesResponse } from "../models/company";
+import { LoginCredentials } from "../models/general";
 
 class Agent {
   constructor() {
-    axios.defaults.baseURL = "http://127.0.0.1:5000";
+    axios.defaults.baseURL = "http://localhost:5000";
     this.registerRequestInterceptors();
     this.registerResponseInterceptors();
   }
 
   get(url: string) {
-    return axios.get(url).then(this.responseBody);
+    return axios
+      .get(url, {
+        withCredentials: true,
+      })
+      .then(this.responseBody);
   }
   getWithParams(url: string, params: any) {
-    return axios.get(url, { params }).then(this.responseBody);
+    return axios
+      .get(url, { params, withCredentials: true })
+      .then(this.responseBody);
   }
   post(url: string, body: {}) {
-    return axios.post(url, body).then(this.responseBody);
+    return axios
+      .post(url, body, {
+        withCredentials: true,
+      })
+      .then(this.responseBody);
   }
   put(url: string, body: {}) {
-    return axios.put(url, body).then(this.responseBody);
+    return axios
+      .put(url, body, {
+        withCredentials: true,
+      })
+      .then(this.responseBody);
   }
   delete(url: string) {
-    return axios.delete(url).then(this.responseBody);
+    return axios
+      .delete(url, {
+        withCredentials: true,
+      })
+      .then(this.responseBody);
   }
   postForm(url: string, file: Blob) {
     let formData = new FormData();
@@ -36,6 +55,7 @@ class Agent {
     return axios
       .post(url, formData, {
         headers: { "Content-type": "multipart/form-data" },
+        withCredentials: true,
       })
       .then(this.responseBody);
   }
@@ -47,10 +67,10 @@ class Agent {
   registerRequestInterceptors() {
     axios.interceptors.request.use(
       (config: any) => {
-        const token = window.localStorage.getItem("accessToken");
-        if (token) {
-          config.headers.Authorization = `Bearer ${token}`;
-        }
+        // const token = window.localStorage.getItem("accessToken");
+        // if (token) {
+        //   config.headers.Authorization = `Bearer ${token}`;
+        // }
         return config;
       },
       (error) => {
@@ -96,9 +116,15 @@ const Company = {
   get: (): Promise<GetCompaniesResponse> => agent.get(`/company`),
 };
 
+const General = {
+  login: (credentials: LoginCredentials): Promise<{}> =>
+    agent.post("/auth/login", credentials),
+};
+
 export default {
   Car,
   Brand,
   Model,
   Company,
+  General,
 };
