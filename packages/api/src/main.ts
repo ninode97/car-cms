@@ -2,6 +2,10 @@ import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import * as cookieParser from 'cookie-parser';
+import * as helmet from 'helmet';
+import * as csurf from 'csurf';
+
+const Helmet = helmet as any;
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
@@ -22,6 +26,13 @@ async function bootstrap() {
       forbidUnknownValues: true,
     }),
   );
+  app.use(Helmet());
+  app.use(
+    csurf({
+      cookie: true,
+    }),
+  );
+
   await app.listen(5000);
 }
 bootstrap();
