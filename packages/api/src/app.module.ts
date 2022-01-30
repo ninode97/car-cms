@@ -10,6 +10,7 @@ import { CompanyModule } from './company/company.module';
 import { AccountingModule } from './accounting/accounting.module';
 import { CarHistoryModule } from './car-history/car-history.module';
 import { AuthModule } from './auth/auth.module';
+import { CaslModule } from './casl/casl.module';
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import { AuthModule } from './auth/auth.module';
     AccountingModule,
     CarHistoryModule,
     AuthModule,
+    CaslModule,
   ],
   controllers: [AppController],
   providers: [AppService, PrismaService],

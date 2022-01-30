@@ -31,6 +31,7 @@ model Model {
 model User {
   id         Int          @id @default(autoincrement())
   email      String       @unique
+  hash       String
   name       String
   surname    String
   birthdate  DateTime

@@ -1,4 +1,6 @@
 import { Brand, PrismaClient } from '@prisma/client';
+import * as bcrypt from 'bcrypt';
+import { AUTH_CONFIGURATION } from '../src/auth/constants';
 
 const prisma = new PrismaClient();
 
@@ -65,16 +67,23 @@ async function seedAdmin() {
   birthdate.setUTCMonth(10);
   birthdate.setUTCDate(17);
   const user = await getAdmin();
+  const passwordHash = await bcrypt.hash(
+    'admin',
+    AUTH_CONFIGURATION.saltOrRounds,
+  );
+  console.log(passwordHash);
   if (user) {
     console.warn('Administrator already exists');
     return;
   }
+
   await prisma.user.create({
     data: {
       name: 'admin',
       surname: 'admin',
       email: 'admin@carcms.com',
       birthdate: birthdate,
+      hash: passwordHash,
     },
   });
   console.warn('Administrator created');
