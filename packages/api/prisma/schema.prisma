@@ -41,6 +41,14 @@ model User {
   Brand      Brand[]
   Model      Model[]
   CarHistory CarHistory[]
+  role       UserRole     @relation(fields: [userRoleId], references: [id])
+  userRoleId Int
+}
+
+model UserRole {
+  id   Int    @unique
+  name String @unique
+  User User[]
 }
 
 model Company {
