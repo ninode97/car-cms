@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import Transition from "./Transition";
 
-
 type InfoProps = {
   children: any;
   className: string;
@@ -44,7 +43,7 @@ const Info: React.FC<InfoProps> = ({
           leave="transition ease-out duration-200"
           leaveStart="opacity-100"
           leaveEnd="opacity-0"
-          appear={1}
+          appear={true}
         >
           {children}
         </Transition>

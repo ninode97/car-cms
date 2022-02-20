@@ -84,6 +84,7 @@ async function seedAdmin() {
       email: 'admin@carcms.com',
       birthdate: birthdate,
       hash: passwordHash,
+      userRoleId: 1,
     },
   });
   console.warn('Administrator created');

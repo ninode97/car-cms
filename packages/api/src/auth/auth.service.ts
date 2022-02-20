@@ -1,54 +1,70 @@
 import {
   BadRequestException,
   Injectable,
-  InternalServerErrorException,
+  UnauthorizedException,
 } from '@nestjs/common';
-import { JwtService } from '@nestjs/jwt';
+import { compare, hash } from 'bcrypt';
 import { UserService } from 'src/user/user.service';
-import { LoginCredentialsDto } from './dto/login-credentials.dto';
-import { LoginJWTSign } from './dto/login-jwt-sign.dto';
-import * as bcrypt from 'bcrypt';
+import { LoginUserDto } from './dto/login-user.dto';
+import { RegisterUserDto } from './dto/register-user.dto';
+
+import { User } from './models/user.interface';
 
 @Injectable()
 export class AuthService {
-  constructor(
-    private userService: UserService,
-    private readonly jwtService: JwtService,
-  ) {}
+  constructor(private readonly userService: UserService) {}
 
-  async validateUser(credentials: LoginCredentialsDto): Promise<LoginJWTSign> {
+  get users() {
+    return [];
+  }
+  async getUserByEmail(email: string) {
     const user = await this.userService.findOne({
       where: {
-        email: credentials.email,
+        email: email,
       },
     });
+    return user;
+  }
 
-    try {
-      if (!user || !(await bcrypt.compare(credentials.password, user.hash))) {
-        throw new BadRequestException({
-          message: 'Incorrect credentials',
-          errCode: 'ERR_INCORRECT_CREDENTIALS',
-        });
-      }
-    } catch (error) {
-      if (error?.response?.errCode === 'ERR_INCORRECT_CREDENTIALS') {
-        throw error;
-      }
-      throw new InternalServerErrorException({
-        message: 'Validate user failure',
-        errCode: 'ERR_VALIDATE_USER_FAILURE',
-      });
+  async validateUser(payload: LoginUserDto) {
+    const user = await this.getUserByEmail(payload.email);
+    if (!user || !(await compare(payload.password, user.hash))) {
+      throw new UnauthorizedException('Incorrect username or password');
     }
+    const { hash: hash, ...userData } = user;
+    return userData;
+  }
 
+  async registerUser(user: RegisterUserDto): Promise<Omit<User, 'password'>> {
+    const existingUser = this.users.find((u) => u.email === user.email);
+    if (existingUser) {
+      throw new BadRequestException('User remail must be unique');
+    }
+    if (user.password !== user.confirmationPassword) {
+      throw new BadRequestException(
+        'Password and Confirmation Password must match',
+      );
+    }
+    const { confirmationPassword: _, ...newUser } = user;
+    this.users.push({
+      ...newUser,
+      password: await hash(user.password, 12),
+      id: this.users.length + 1,
+    });
     return {
-      id: user.id,
+      id: this.users.length,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      email: user.email,
+      role: user.role,
     };
   }
 
-  async login(credentials: LoginCredentialsDto) {
-    const jwtSignPayload = await this.validateUser(credentials);
-    return {
-      access_token: this.jwtService.sign(jwtSignPayload),
-    };
+  findById(id: number): Omit<User, 'password'> {
+    const { password: _, ...user } = this.users.find((u) => u.id === id);
+    if (!user) {
+      throw new BadRequestException(`No user found with id ${id}`);
+    }
+    return user;
   }
 }

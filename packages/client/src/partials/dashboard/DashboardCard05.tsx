@@ -43,29 +43,29 @@ function DashboardCard05() {
   );
 
   // Fake update every 2 seconds
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCounter(counter + 1);
-    }, 2000);
-    return () => clearInterval(interval);
-  }, [counter]);
+  // useEffect(() => {
+  //   const interval = setInterval(() => {
+  //     setCounter(counter + 1);
+  //   }, 2000);
+  //   return () => clearInterval(interval);
+  // }, [counter]);
 
-  // Loop through data array and update
-  useEffect(() => {
-    setIncrement(increment + 1);
-    if (increment + range < data.length) {
-      setSlicedData(([x, ...slicedData]) => [
-        ...slicedData,
-        data[increment + range],
-      ]);
-    } else {
-      setIncrement(0);
-      setRange(0);
-    }
-    setSlicedLabels(([x, ...slicedLabels]) => [...slicedLabels, new Date()]);
-    return () => setIncrement(0);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [counter]);
+  // // Loop through data array and update
+  // useEffect(() => {
+  //   setIncrement(increment + 1);
+  //   if (increment + range < data.length) {
+  //     setSlicedData(([x, ...slicedData]) => [
+  //       ...slicedData,
+  //       data[increment + range],
+  //     ]);
+  //   } else {
+  //     setIncrement(0);
+  //     setRange(0);
+  //   }
+  //   setSlicedLabels(([x, ...slicedLabels]) => [...slicedLabels, new Date()]);
+  //   return () => setIncrement(0);
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [counter]);
 
   const chartData = {
     labels: slicedLabels,

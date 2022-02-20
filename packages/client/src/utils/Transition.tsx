@@ -53,7 +53,9 @@ function CSSTransition({
       unmountOnExit={removeFromDom}
       in={show}
       addEndListener={(done: any) => {
-        nodeRef.current.addEventListener("transitionend", done, false);
+        nodeRef &&
+          nodeRef.current &&
+          nodeRef.current.addEventListener("transitionend", done, false);
       }}
       onEnter={() => {
         if (!removeFromDom) nodeRef.current.style.display = null;

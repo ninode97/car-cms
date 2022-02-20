@@ -1,40 +1,27 @@
-import { Controller, Get, Post, Request, Body, Res } from '@nestjs/common';
+import { Controller, Get, UseGuards } from '@nestjs/common';
+import { AdminGuard } from './admin.guard';
+
 import { AppService } from './app.service';
-import { AuthService } from './auth/auth.service';
-import { Public } from './auth/decorators/is-public.decorator';
-import { LoginCredentialsDto } from './auth/dto/login-credentials.dto';
-import { Response } from 'express';
+import { LoggedInGuard } from './logged-in.guard';
 
 @Controller()
 export class AppController {
-  constructor(
-    private readonly appService: AppService,
-    private readonly authService: AuthService,
-  ) {}
+  constructor(private readonly appService: AppService) {}
 
   @Get()
-  getHello(): string {
-    return this.appService.getHello();
+  publicRoute() {
+    return this.appService.getPublicMessage();
   }
 
-  @Public()
-  @Post('auth/login')
-  async login(@Res() response: Response, @Body() body: LoginCredentialsDto) {
-    const payload = await this.authService.login(body);
-    response
-      .cookie('access_token', payload.access_token, {
-        httpOnly: true,
-        secure: true,
-        sameSite: 'none',
-        domain: 'localhost', // your domain here!
-        expires: new Date(Date.now() + 1000 * 60 * 60 * 24),
-      })
-      .json({ success: true });
+  @UseGuards(LoggedInGuard)
+  @Get('protected')
+  guardedRoute() {
+    return this.appService.getPrivateMessage();
   }
 
-  @Public()
-  @Get('profile')
-  getProfile(@Request() req) {
-    return req.user;
+  @UseGuards(AdminGuard)
+  @Get('admin')
+  getAdminMessage() {
+    return this.appService.getAdminMessage();
   }
 }

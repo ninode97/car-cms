@@ -1,14 +1,17 @@
-import { Body, Controller, Get, Post, Query } from '@nestjs/common';
+import { Body, Controller, Get, Post, Query, UseGuards } from '@nestjs/common';
 import { CarService } from './car.service';
 
 import { Car as CarModel } from '@prisma/client';
 import { GetCarsRequestDto } from './dto/get-cars-request.dto';
 import { GetCarsResponseDto } from './dto/get-cars-response.dto';
 import { PostCarRequestDto } from './dto/post-car-request.dto';
+import { LocalAuthGuard } from 'src/auth/guards/local-auth.guard';
 
 @Controller('car')
 export class CarController {
   constructor(private carService: CarService) {}
+
+  @UseGuards(LocalAuthGuard)
   @Get()
   async getCars(
     @Query() query: GetCarsRequestDto,

@@ -11,43 +11,31 @@ import { LoginCredentials } from "../models/general";
 
 class Agent {
   constructor() {
-    axios.defaults.baseURL = "http://localhost:5000";
+    axios.defaults.baseURL = "http://127.0.0.1:5000";
     this.registerRequestInterceptors();
     this.registerResponseInterceptors();
   }
 
-  get(url: string) {
+  get(url: string, withCreds = false) {
     return axios
       .get(url, {
-        withCredentials: true,
+        withCredentials: withCreds,
       })
       .then(this.responseBody);
   }
-  getWithParams(url: string, params: any) {
+  getWithParams(url: string, params: any, withCreds = false) {
     return axios
-      .get(url, { params, withCredentials: true })
+      .get(url, { params, withCredentials: withCreds })
       .then(this.responseBody);
   }
   post(url: string, body: {}) {
-    return axios
-      .post(url, body, {
-        withCredentials: true,
-      })
-      .then(this.responseBody);
+    return axios.post(url, body, {}).then(this.responseBody);
   }
   put(url: string, body: {}) {
-    return axios
-      .put(url, body, {
-        withCredentials: true,
-      })
-      .then(this.responseBody);
+    return axios.put(url, body, {}).then(this.responseBody);
   }
   delete(url: string) {
-    return axios
-      .delete(url, {
-        withCredentials: true,
-      })
-      .then(this.responseBody);
+    return axios.delete(url, {}).then(this.responseBody);
   }
   postForm(url: string, file: Blob) {
     let formData = new FormData();
@@ -55,7 +43,6 @@ class Agent {
     return axios
       .post(url, formData, {
         headers: { "Content-type": "multipart/form-data" },
-        withCredentials: true,
       })
       .then(this.responseBody);
   }
@@ -99,7 +86,7 @@ const agent = new Agent();
 
 const Car = {
   get: (skip = 0, take = 10): Promise<CarsResponse> =>
-    agent.get(`/car?skip=${skip}&take=${take}`),
+    agent.get(`/car?skip=${skip}&take=${take}`, true),
   post: (car: PostCar) => agent.post("/car", car),
 };
 
