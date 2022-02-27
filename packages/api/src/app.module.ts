@@ -49,9 +49,10 @@ export class AppModule implements NestModule {
           secret: 'redis-secret',
           resave: false,
           cookie: {
-            sameSite: 'none',
-            httpOnly: false,
-            maxAge: 60000,
+            // sameSite: 'none',
+            httpOnly: true,
+            maxAge: 60000 * 24,
+            secure: false,
           },
         }),
         passport.initialize(),
