@@ -2,11 +2,13 @@ import React, { useState, useEffect, useRef } from "react";
 import { IoCarSportSharp } from "react-icons/io5";
 import { SiFeedly } from "react-icons/si";
 import { NavLink, useLocation } from "react-router-dom";
-
+import { useTranslation } from "react-i18next";
 import SidebarLinkGroup from "./SidebarLinkGroup";
+import LangSelect from "../app/common/LangSelect/LangSelect";
 
 function Sidebar({ sidebarOpen, setSidebarOpen }: any) {
   const location = useLocation();
+  const { t } = useTranslation();
   const { pathname } = location;
 
   const trigger = useRef<any>(null);
@@ -131,6 +133,8 @@ function Sidebar({ sidebarOpen, setSidebarOpen }: any) {
               />
             </svg>
           </NavLink>
+
+          <LangSelect />
         </div>
 
         {/* Links */}
@@ -280,6 +284,54 @@ function Sidebar({ sidebarOpen, setSidebarOpen }: any) {
                     </svg> */}
                     <span className="text-sm font-medium ml-3 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">
                       Feed
+                    </span>
+                  </div>
+                </NavLink>
+              </li>
+
+              {/* Feed  */}
+              <li
+                className={`px-3 py-2 rounded-sm mb-0.5 last:mb-0 ${
+                  pathname === "/feed" && "bg-gray-900"
+                }`}
+              >
+                <NavLink
+                  to="/feed"
+                  className={`block text-gray-200 hover:text-white truncate transition duration-150 ${
+                    pathname === "/feed" && "hover:text-gray-200"
+                  }`}
+                >
+                  <div className="flex items-center">
+                    {pathname === "/feed" ? (
+                      <SiFeedly
+                        className={`shrink-0 h-6 w-6 text-indigo-600`}
+                      />
+                    ) : (
+                      <SiFeedly className={`shrink-0 h-6 w-6 text-gray-600 `} />
+                    )}
+
+                    {/* <svg className="shrink-0 h-6 w-6" viewBox="0 0 24 24">
+                      <path
+                        className={`fill-current text-gray-400 ${
+                          pathname === "/cars" && "!text-indigo-500"
+                        }`}
+                        d="M12 0C5.383 0 0 5.383 0 12s5.383 12 12 12 12-5.383 12-12S18.617 0 12 0z"
+                      />
+                      <path
+                        className={`fill-current text-gray-600 ${
+                          pathname === "/cars" && "text-indigo-600"
+                        }`}
+                        d="M12 3c-4.963 0-9 4.037-9 9s4.037 9 9 9 9-4.037 9-9-4.037-9-9-9z"
+                      />
+                      <path
+                        className={`fill-current text-gray-400 ${
+                          pathname === "/cars" && "text-indigo-200"
+                        }`}
+                        d="M12 15c-1.654 0-3-1.346-3-3 0-.462.113-.894.3-1.285L6 6l4.714 3.301A2.973 2.973 0 0112 9c1.654 0 3 1.346 3 3s-1.346 3-3 3z"
+                      />
+                    </svg> */}
+                    <span className="text-sm font-medium ml-3 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">
+                      {t("test")}
                     </span>
                   </div>
                 </NavLink>

@@ -27,7 +27,6 @@ export class AuthService {
   }
 
   async validateUser(payload: LoginUserDto) {
-    console.log('validate user');
     const user = await this.getUserByEmail(payload.email);
     if (!user || !(await compare(payload.password, user.hash))) {
       throw new UnauthorizedException('Incorrect username or password');

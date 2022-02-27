@@ -25,7 +25,6 @@ export class AuthController {
   @Post('login')
   loginUser(@Req() req) {
     const user = req.session?.passport?.user;
-    console.log({ user });
     if (!user) throw new BadRequestException();
     return user;
   }

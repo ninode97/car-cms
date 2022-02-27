@@ -6,6 +6,7 @@ import "./css/style.scss";
 import "react-datetime/css/react-datetime.css";
 import AppLoader from "./app/common/AppLoader";
 import { useQuery, QueryClient, QueryClientProvider } from "react-query";
+import "./app/i18n";
 
 const queryCache = new QueryClient();
 
