@@ -6,12 +6,13 @@ import { GetCarsRequestDto } from './dto/get-cars-request.dto';
 import { GetCarsResponseDto } from './dto/get-cars-response.dto';
 import { PostCarRequestDto } from './dto/post-car-request.dto';
 import { LocalAuthGuard } from 'src/auth/guards/local-auth.guard';
+import { LoggedInGuard } from 'src/logged-in.guard';
 
 @Controller('car')
 export class CarController {
   constructor(private carService: CarService) {}
 
-  @UseGuards(LocalAuthGuard)
+  @UseGuards(LoggedInGuard)
   @Get()
   async getCars(
     @Query() query: GetCarsRequestDto,

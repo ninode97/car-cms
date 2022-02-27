@@ -1,14 +1,14 @@
 import {
   BadRequestException,
   Injectable,
+  InternalServerErrorException,
   UnauthorizedException,
 } from '@nestjs/common';
 import { compare, hash } from 'bcrypt';
 import { UserService } from 'src/user/user.service';
 import { LoginUserDto } from './dto/login-user.dto';
 import { RegisterUserDto } from './dto/register-user.dto';
-
-import { User } from './models/user.interface';
+import { User } from '@prisma/client';
 
 @Injectable()
 export class AuthService {
@@ -27,6 +27,7 @@ export class AuthService {
   }
 
   async validateUser(payload: LoginUserDto) {
+    console.log('validate user');
     const user = await this.getUserByEmail(payload.email);
     if (!user || !(await compare(payload.password, user.hash))) {
       throw new UnauthorizedException('Incorrect username or password');
@@ -35,36 +36,29 @@ export class AuthService {
     return userData;
   }
 
-  async registerUser(user: RegisterUserDto): Promise<Omit<User, 'password'>> {
-    const existingUser = this.users.find((u) => u.email === user.email);
-    if (existingUser) {
-      throw new BadRequestException('User remail must be unique');
-    }
-    if (user.password !== user.confirmationPassword) {
-      throw new BadRequestException(
-        'Password and Confirmation Password must match',
-      );
-    }
-    const { confirmationPassword: _, ...newUser } = user;
-    this.users.push({
-      ...newUser,
-      password: await hash(user.password, 12),
-      id: this.users.length + 1,
+  async findById(id: number): Promise<Omit<User, 'hash'>> {
+    const user = await this.userService.findOne({
+      where: {
+        id: id,
+      },
     });
-    return {
-      id: this.users.length,
-      firstName: user.firstName,
-      lastName: user.lastName,
-      email: user.email,
-      role: user.role,
-    };
-  }
-
-  findById(id: number): Omit<User, 'password'> {
-    const { password: _, ...user } = this.users.find((u) => u.id === id);
     if (!user) {
       throw new BadRequestException(`No user found with id ${id}`);
     }
-    return user;
+    const { hash: _, ...partialuser } = user;
+    return partialuser;
+  }
+
+  async destroySession(req: any, res: any) {
+    return new Promise((resolve, reject) => {
+      req.logout();
+      req.session.destroy((err) => {
+        if (err) {
+          return reject(new InternalServerErrorException());
+        }
+        res.clearCookie('connect.sid');
+        return resolve(true);
+      });
+    });
   }
 }

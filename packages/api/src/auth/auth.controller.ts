@@ -1,5 +1,15 @@
-import { Body, Controller, Post, Req, UseGuards } from '@nestjs/common';
+import {
+  BadRequestException,
+  Body,
+  Controller,
+  Get,
+  Post,
+  Req,
+  Res,
+  UseGuards,
+} from '@nestjs/common';
 import { LocalGuard } from 'src/local.gurad';
+import { LoggedInGuard } from 'src/logged-in.guard';
 
 import { AuthService } from './auth.service';
 import { Public } from './decorators/is-public.decorator';
@@ -10,15 +20,29 @@ import { RegisterUserDto } from './dto/register-user.dto';
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
-  @Post('register')
-  registerUser(@Body() user: RegisterUserDto) {
-    return this.authService.registerUser(user);
-  }
-
   @Public()
   @UseGuards(LocalGuard)
   @Post('login')
-  loginUser(@Req() req, @Body() user: LoginUserDto) {
-    return req.session;
+  loginUser(@Req() req) {
+    const user = req.session?.passport?.user;
+    console.log({ user });
+    if (!user) throw new BadRequestException();
+    return user;
+  }
+
+  @UseGuards(LoggedInGuard)
+  @Get('current')
+  currentUser() {
+    console.log('ok');
+    return {
+      o: 'k',
+    };
+  }
+
+  @UseGuards(LoggedInGuard)
+  @Post('logout')
+  async logout(@Req() req, @Res() res) {
+    await this.authService.destroySession(req, res);
+    return {};
   }
 }
