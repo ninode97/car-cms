@@ -1,4 +1,5 @@
-import axios, { AxiosResponse } from "axios";
+import axios, { AxiosError, AxiosResponse } from "axios";
+import { ToastMessage } from "../../App";
 import {
   Car,
   CarBrandResponse,
@@ -7,10 +8,11 @@ import {
   PostCar,
 } from "../models/car";
 import { GetCompaniesResponse } from "../models/company";
-import { LoginCredentials } from "../models/general";
+import { LoginCredentials, LoginResponse } from "../models/general";
 
 class Agent {
   constructor() {
+    axios.defaults.withCredentials = true;
     axios.defaults.baseURL = "http://127.0.0.1:5000";
     this.registerRequestInterceptors();
     this.registerResponseInterceptors();
@@ -54,10 +56,6 @@ class Agent {
   registerRequestInterceptors() {
     axios.interceptors.request.use(
       (config: any) => {
-        // const token = window.localStorage.getItem("accessToken");
-        // if (token) {
-        //   config.headers.Authorization = `Bearer ${token}`;
-        // }
         return config;
       },
       (error) => {
@@ -104,9 +102,47 @@ const Company = {
 };
 
 const General = {
-  login: (credentials: LoginCredentials): Promise<{}> =>
+  login: (credentials: LoginCredentials): Promise<LoginResponse> =>
     agent.post("/auth/login", credentials),
+
+  current: () => agent.get("/auth/current", true),
+  logout: () => agent.post("/auth/logout", {}),
 };
+
+interface ErrorData {
+  message: string;
+}
+
+interface AxiosErrorData {
+  [name: number]: ErrorData;
+  other: {
+    message: string;
+  };
+}
+
+class AxiosErrorHandler {
+  constructor() {}
+
+  isAxiosError(error: any): error is AxiosResponse {
+    return true;
+  }
+
+  handleError(error: any, statusCodeData: AxiosErrorData) {
+    this.isAxiosError(error)
+      ? this.handleAxiosError(error, statusCodeData)
+      : this.handleUnkownError(error, statusCodeData);
+  }
+  handleAxiosError(error: AxiosResponse, statusCodeData: AxiosErrorData) {
+    const statusCode = error.status;
+    const errorData = statusCodeData[statusCode] || statusCodeData.other;
+    ToastMessage("error", errorData.message);
+  }
+  handleUnkownError(error: any, statusCodeData: AxiosErrorData) {
+    ToastMessage("error", statusCodeData.other.message);
+  }
+}
+
+const axiosErrorHandler = new AxiosErrorHandler();
 
 export default {
   Car,
@@ -114,4 +150,5 @@ export default {
   Model,
   Company,
   General,
+  axiosErrorHandler,
 };

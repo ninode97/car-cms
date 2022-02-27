@@ -3,6 +3,18 @@ import { useContext, useEffect } from "react";
 import { useLocation, useRoutes } from "react-router-dom";
 import routes from "./app/routes";
 import { RootStoreContext } from "./app/stores/rootStore";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
+export const ToastMessage = (
+  type: "info" | "success" | "warning" | "error" | "default",
+  message: string
+) => {
+  toast(message, {
+    type,
+    position: "bottom-right",
+  });
+};
 
 function App() {
   const rootStore = useContext(RootStoreContext);
@@ -15,7 +27,12 @@ function App() {
     (window as any).scroll({ top: 0 });
   }, [location.pathname]); // triggered on route change
 
-  return <>{routing}</>;
+  return (
+    <>
+      {routing}
+      <ToastContainer />
+    </>
+  );
 }
 
 export default observer(App);
