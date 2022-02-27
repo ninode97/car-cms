@@ -51,6 +51,22 @@ export default class CommonStore {
     }
   };
 
+  @action logout = async () => {
+    try {
+      await agent.General.logout();
+      runInAction(() => {
+        this.user = null;
+        ToastMessage("info", "Successfully logged out");
+      });
+    } catch (error) {
+      agent.axiosErrorHandler.handleError(error, {
+        other: {
+          message: "Failed to logout",
+        },
+      });
+    }
+  };
+
   @action current = async () => {
     try {
       const profile = await agent.General.current();

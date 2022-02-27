@@ -102,7 +102,7 @@ function UserMenu() {
                 to="/"
                 onClick={() => {
                   setDropdownOpen(!dropdownOpen);
-                  rootStore.commonStore.clearToken();
+                  rootStore.commonStore.logout();
                 }}
               >
                 Sign Out

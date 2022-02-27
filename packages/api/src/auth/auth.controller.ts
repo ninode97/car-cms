@@ -42,7 +42,11 @@ export class AuthController {
   @UseGuards(LoggedInGuard)
   @Post('logout')
   async logout(@Req() req, @Res() res) {
-    await this.authService.destroySession(req, res);
-    return {};
+    try {
+      await this.authService.destroySession(req, res);
+      return res.status(200).json({});
+    } catch (error) {
+      throw error;
+    }
   }
 }
