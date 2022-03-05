@@ -24,6 +24,10 @@ class Agent {
     return this.baseURL;
   }
 
+  get localeURL() {
+    return `${this.baseURL}/lang/{{lng}}`;
+  }
+
   get(url: string, withCreds = false) {
     return axios
       .get(url, {
@@ -114,6 +118,10 @@ const General = {
   current: () => agent.get("/auth/current", true),
   logout: () => agent.post("/auth/logout", {}),
 };
+
+export const Language = {
+  loadPath: agent.localeURL,
+};
 interface ErrorData {
   message: string;
 }
@@ -155,5 +163,6 @@ export default {
   Model,
   Company,
   General,
+  Language,
   axiosErrorHandler,
 };

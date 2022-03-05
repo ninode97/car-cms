@@ -16,6 +16,7 @@ import { REDIS } from './redis/redis.constants';
 import * as session from 'express-session';
 import * as passport from 'passport';
 import { RedisClientType } from 'redis';
+import { LangModule } from './lang/lang.module';
 import * as RedisStore from 'connect-redis';
 
 @Module({
@@ -30,6 +31,7 @@ import * as RedisStore from 'connect-redis';
     CarHistoryModule,
     AuthModule,
     CaslModule,
+    LangModule,
   ],
   controllers: [AppController],
   providers: [AppService, PrismaService],
