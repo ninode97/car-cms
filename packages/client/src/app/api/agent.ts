@@ -11,11 +11,17 @@ import { GetCompaniesResponse } from "../models/company";
 import { LoginCredentials, LoginResponse } from "../models/general";
 
 class Agent {
+  private baseURL: string;
   constructor() {
+    this.baseURL = "http://127.0.0.1:5000";
     axios.defaults.withCredentials = true;
-    axios.defaults.baseURL = "http://127.0.0.1:5000";
+    axios.defaults.baseURL = this.baseURL;
     this.registerRequestInterceptors();
     this.registerResponseInterceptors();
+  }
+
+  get endpoint() {
+    return this.baseURL;
   }
 
   get(url: string, withCreds = false) {
@@ -108,7 +114,6 @@ const General = {
   current: () => agent.get("/auth/current", true),
   logout: () => agent.post("/auth/logout", {}),
 };
-
 interface ErrorData {
   message: string;
 }

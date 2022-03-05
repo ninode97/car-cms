@@ -4,7 +4,7 @@ import Backend from "i18next-http-backend";
 import LanguageDetector from "i18next-browser-languagedetector";
 
 const fallbackLng = ["en"];
-const availableLanguages = ["en", "ar", "fr"];
+const availableLanguages = ["en", "lt"];
 
 i18n
   .use(
