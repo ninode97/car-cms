@@ -5,5 +5,19 @@
         "cars": "Automobiliai",
         "feed": "Srautas",
         "users": "Naudotojai"
+    },
+    "user": {
+        "grid": {
+            "email": "El. paštas",
+            "name": "Vardas",
+            "lastname": "Pavardė",
+            "role": "Rolė",
+            "actions": "Veiksmai"
+        }
+    },
+    "roles": {
+        "administrator": "Administratorius",
+        "moderator": "Moderatorius",
+        "regular": "Naudotojas"
     }
 }

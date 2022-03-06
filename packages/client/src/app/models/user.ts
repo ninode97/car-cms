@@ -5,6 +5,21 @@ export enum UserRoleEnumeration {
   REGULAR = 3,
 }
 
+export type AvailableRoles = Exclude<
+  UserRoleEnumeration,
+  UserRoleEnumeration.LOGGED_OFF
+>;
+
+export const userRoleTranslations = Object.freeze({
+  [UserRoleEnumeration.ADMINISTRATOR]: "roles.administrator",
+  [UserRoleEnumeration.REGULAR]: "roles.regular",
+  [UserRoleEnumeration.MODERATOR]: "roles.moderator",
+});
+
+export const roleTranslationMapper = (roleId: AvailableRoles) => {
+  return userRoleTranslations[roleId];
+};
+
 export type UserRole = {
   id: number;
   name: string;
