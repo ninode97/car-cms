@@ -1,10 +1,40 @@
-import { Controller, Delete, Get, Post, Put } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Put,
+  UseGuards,
+} from '@nestjs/common';
+import {
+  classToPlain,
+  instanceToInstance,
+  plainToClass,
+  plainToInstance,
+} from 'class-transformer';
+import { Action, PrismaAppAbility } from 'src/casl/casl-ability.factory';
+import { CheckPolicies, PoliciesGuard } from 'src/casl/policy-handler';
+import { UsersRequestDto, UsersResponseDto, UserDto } from './dto/user.dto';
+import { UserService } from './user.service';
 
 @Controller('user')
 export class UserController {
+  constructor(private readonly userService: UserService) {}
+
   @Get()
-  getUser() {
-    return {};
+  @UseGuards(PoliciesGuard)
+  @CheckPolicies((ability: PrismaAppAbility) =>
+    ability.can(Action.Read, 'User'),
+  )
+  async getUser(@Param() dto: UsersRequestDto): Promise<UsersResponseDto> {
+    const users = await this.userService.find({});
+    return {
+      skip: dto.skip,
+      take: dto.take,
+      users: plainToInstance(UserDto, users),
+    };
   }
 
   @Post()
@@ -31,4 +61,7 @@ export class UserController {
   getRoles() {
     return [];
   }
+}
+function Params() {
+  throw new Error('Function not implemented.');
 }

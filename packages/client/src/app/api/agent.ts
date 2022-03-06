@@ -9,6 +9,7 @@ import {
 } from "../models/car";
 import { GetCompaniesResponse } from "../models/company";
 import { LoginCredentials, LoginResponse } from "../models/general";
+import { UsersRequest, UsersResponse } from "../models/user";
 
 class Agent {
   private baseURL: string;
@@ -28,17 +29,11 @@ class Agent {
     return `${this.baseURL}/lang/{{lng}}`;
   }
 
-  get(url: string, withCreds = false) {
-    return axios
-      .get(url, {
-        withCredentials: withCreds,
-      })
-      .then(this.responseBody);
+  get(url: string) {
+    return axios.get(url, {}).then(this.responseBody);
   }
-  getWithParams(url: string, params: any, withCreds = false) {
-    return axios
-      .get(url, { params, withCredentials: withCreds })
-      .then(this.responseBody);
+  getWithParams(url: string, params: any) {
+    return axios.get(url, { params }).then(this.responseBody);
   }
   post(url: string, body: {}) {
     return axios.post(url, body, {}).then(this.responseBody);
@@ -94,7 +89,7 @@ const agent = new Agent();
 
 const Car = {
   get: (skip = 0, take = 10): Promise<CarsResponse> =>
-    agent.get(`/car?skip=${skip}&take=${take}`, true),
+    agent.get(`/car?skip=${skip}&take=${take}`),
   post: (car: PostCar) => agent.post("/car", car),
 };
 
@@ -115,13 +110,30 @@ const General = {
   login: (credentials: LoginCredentials): Promise<LoginResponse> =>
     agent.post("/auth/login", credentials),
 
-  current: () => agent.get("/auth/current", true),
+  current: () => agent.get("/auth/current"),
   logout: () => agent.post("/auth/logout", {}),
 };
 
 export const Language = {
   loadPath: agent.localeURL,
 };
+
+const User = {
+  get: (dto: UsersRequest): Promise<UsersResponse> => {
+    const searchObj: any = {};
+    Object.keys(dto).forEach((key) => {
+      const t = dto as any;
+      const val = t[key];
+      val && (searchObj[key] = val);
+    });
+
+    return agent.getWithParams(
+      "/user",
+      new URLSearchParams(searchObj).toString()
+    );
+  },
+};
+
 interface ErrorData {
   message: string;
 }
@@ -164,5 +176,6 @@ export default {
   Company,
   General,
   Language,
+  User,
   axiosErrorHandler,
 };
