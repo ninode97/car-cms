@@ -32,16 +32,19 @@ export enum Action {
 
 //export type AppAbility = Ability<[Action, Subjects]>;
 
+enum PrismaModels {
+  User = 'User',
+  UserRole = 'UserRole',
+  Car = 'Car',
+  CarHistory = 'CarHistory',
+  Brand = 'Brand',
+  Model = 'Model',
+  CodeForAccounting = 'CodeForAccounting',
+  Company = 'Company',
+}
+
 type ActionOptions = {
-  key:
-    | 'User'
-    | 'UserRole'
-    | 'Car'
-    | 'CarHistory'
-    | 'Brand'
-    | 'Model'
-    | 'CodeForAccounting'
-    | 'Company';
+  key: PrismaModels;
   canRead: boolean;
   canCreate: boolean;
   canDelete: boolean;
@@ -89,9 +92,38 @@ export class CaslAbilityFactory {
   applyRegularUser(can, cannot) {}
 
   applyModeratorUser(can, cannot) {
-    can(Action.Create, 'Brand');
-    can(Action.Read, 'Brand');
-    can(Action.Read, 'Brand');
+    this.setPerms(can, cannot, {
+      key: PrismaModels.User,
+      canRead: true,
+      canUpdate: true,
+      canCreate: true,
+      canManage: true,
+      canDelete: false,
+    });
+    this.setPerms(can, cannot, {
+      key: PrismaModels.Car,
+      canRead: true,
+      canUpdate: true,
+      canCreate: true,
+      canManage: false,
+      canDelete: false,
+    });
+    this.setPerms(can, cannot, {
+      key: PrismaModels.CarHistory,
+      canRead: true,
+      canUpdate: false,
+      canCreate: false,
+      canManage: false,
+      canDelete: false,
+    });
+    this.setPerms(can, cannot, {
+      key: PrismaModels.UserRole,
+      canRead: true,
+      canUpdate: true,
+      canCreate: true,
+      canManage: false,
+      canDelete: false,
+    });
   }
 
   applyAdminUser(can, cannot) {
@@ -102,18 +134,13 @@ export class CaslAbilityFactory {
       canManage: true,
       canUpdate: true,
     };
-    this.setPerms(can, cannot, {
-      key: 'Brand',
-      ...opts,
-    });
-    this.setPerms(can, cannot, {
-      key: 'Car',
-      ...opts,
-    });
-    this.setPerms(can, cannot, {
-      key: 'User',
-      ...opts,
-    });
+
+    for (const name in PrismaModels) {
+      this.setPerms(can, cannot, {
+        key: name as PrismaModels,
+        ...opts,
+      });
+    }
   }
 
   setPerms(can, cannot, options: ActionOptions) {
