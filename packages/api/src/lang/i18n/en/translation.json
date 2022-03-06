@@ -1,3 +1,9 @@
 {
-    "test": "Hello World"
+    "test": "Hello World",
+    "sidebar": {
+        "dashboard": "Dashboard",
+        "cars": "Cars",
+        "feed": "Feed",
+        "users": "Users"
+    }
 }

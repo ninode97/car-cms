@@ -1,3 +1,9 @@
 {
-    "test": "Sveiki"
+    "test": "Sveiki",
+    "sidebar": {
+        "dashboard": "Pradžia",
+        "cars": "Automobiliai",
+        "feed": "Srautas",
+        "users": "Naudotojai"
+    }
 }

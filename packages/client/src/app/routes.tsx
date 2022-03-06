@@ -5,6 +5,7 @@ import InspectCar from "../pages/cars/InspectCar";
 import Dashboard from "../pages/Dashboard";
 import HistoryFeed from "../pages/feed/HistoryFeed";
 import Login from "../pages/Login";
+import UserGrid from "../pages/users/UserGrid";
 
 const getRouteElement = (element: JSX.Element, isLoggedIn: boolean) => {
   return isLoggedIn ? element : <Login />;
@@ -29,6 +30,10 @@ const routes = (isLoggedIn: boolean) => [
   {
     path: "/feed",
     element: getRouteElement(<HistoryFeed />, isLoggedIn),
+  },
+  {
+    path: "/users",
+    element: getRouteElement(<UserGrid />, isLoggedIn),
   },
   // {
   //   path: '/app',

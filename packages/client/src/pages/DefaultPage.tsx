@@ -9,7 +9,7 @@ import Banner from "../partials/Banner";
 import DashboardAvatars from "../partials/dashboard/DashboardAvatars";
 import WelcomeBanner from "../partials/dashboard/WelcomeBanner";
 import Header from "../partials/Header";
-import Sidebar from "../partials/Sidebar";
+import Sidebar from "../partials/sidebar/Sidebar";
 
 type DefaultPageProps = {
   children: JSX.Element | JSX.Element[] | null;
