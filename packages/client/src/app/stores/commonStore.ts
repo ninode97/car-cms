@@ -9,6 +9,7 @@ import {
 } from "mobx";
 import agent from "../api/agent";
 import { ToastMessage } from "../../App";
+import { UserRoleEnumeration } from "../models/user";
 
 export default class CommonStore {
   rootStore: RootStore;
@@ -22,6 +23,12 @@ export default class CommonStore {
   @observable isLoading = true;
   @observable sidebarOpen = true;
   @observable user: any = null;
+
+  @computed get currentRole() {
+    const userRoleId = this.user?.userRoleId;
+    console.log(userRoleId);
+    return userRoleId || UserRoleEnumeration.LOGGED_OFF;
+  }
 
   @computed get isLoggedIn() {
     return !!this.user;

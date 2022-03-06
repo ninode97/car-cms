@@ -5,6 +5,8 @@ import routes from "./app/routes";
 import { RootStoreContext } from "./app/stores/rootStore";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { AbilityContext } from "./casl/Can";
+import { buildAbilityFor } from "./casl/ability";
 
 export const ToastMessage = (
   type: "info" | "success" | "warning" | "error" | "default",
@@ -27,9 +29,13 @@ function App() {
     (window as any).scroll({ top: 0 });
   }, [location.pathname]); // triggered on route change
 
+  const ability = buildAbilityFor(rootStore.commonStore.currentRole);
+
   return (
     <>
-      {routing}
+      <AbilityContext.Provider value={ability}>
+        {routing}
+      </AbilityContext.Provider>
       <ToastContainer />
     </>
   );

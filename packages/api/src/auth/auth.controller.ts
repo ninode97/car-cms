@@ -31,11 +31,8 @@ export class AuthController {
 
   @UseGuards(LoggedInGuard)
   @Get('current')
-  currentUser() {
-    console.log('ok');
-    return {
-      o: 'k',
-    };
+  currentUser(@Req() req) {
+    return req.user;
   }
 
   @UseGuards(LoggedInGuard)

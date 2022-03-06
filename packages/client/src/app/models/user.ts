@@ -1,3 +1,10 @@
+export enum UserRoleEnumeration {
+  LOGGED_OFF = -1,
+  ADMINISTRATOR = 1,
+  MODERATOR = 2,
+  REGULAR = 3,
+}
+
 export type UserRole = {
   id: number;
   name: string;

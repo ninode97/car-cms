@@ -127,20 +127,7 @@ export class CaslAbilityFactory {
   }
 
   applyAdminUser(can, cannot) {
-    const opts = {
-      canRead: true,
-      canCreate: true,
-      canDelete: true,
-      canManage: true,
-      canUpdate: true,
-    };
-
-    for (const name in PrismaModels) {
-      this.setPerms(can, cannot, {
-        key: name as PrismaModels,
-        ...opts,
-      });
-    }
+    can(Action.Manage, 'all');
   }
 
   setPerms(can, cannot, options: ActionOptions) {

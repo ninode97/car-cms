@@ -4,11 +4,14 @@ import { FaUsers } from "react-icons/fa";
 import { SiFeedly } from "react-icons/si";
 import { RiDashboard2Line } from "react-icons/ri";
 import { NavLink, useLocation } from "react-router-dom";
+import { Can, useAbility } from "@casl/react";
 import { useTranslation } from "react-i18next";
 import SidebarLinkGroup from "./SidebarLinkGroup";
 import LangSelect from "../../app/common/LangSelect/LangSelect";
 import SidebarLink from "./SidebarLink";
-
+import { AbilityContext } from "../../casl/Can";
+import { ActionEnumeration, SubjectsEnumeration } from "../../casl/ability";
+import { observer } from "mobx-react-lite";
 function Sidebar({ sidebarOpen, setSidebarOpen }: any) {
   const location = useLocation();
   const { t } = useTranslation();
@@ -21,6 +24,8 @@ function Sidebar({ sidebarOpen, setSidebarOpen }: any) {
   const [sidebarExpanded, setSidebarExpanded] = useState<any>(
     storedSidebarExpanded === null ? false : storedSidebarExpanded === "true"
   );
+
+  const ability = useAbility(AbilityContext);
 
   // close on click outside
   useEffect(() => {
@@ -171,11 +176,18 @@ function Sidebar({ sidebarOpen, setSidebarOpen }: any) {
                 label={"sidebar.feed"}
                 Icon={SiFeedly}
               />
-              <SidebarLink
-                linkPath={"/users"}
-                label={"sidebar.users"}
-                Icon={FaUsers}
-              />
+
+              <Can
+                do={ActionEnumeration.Read}
+                on={SubjectsEnumeration.User}
+                ability={ability}
+              >
+                <SidebarLink
+                  linkPath={"/users"}
+                  label={"sidebar.users"}
+                  Icon={FaUsers}
+                />
+              </Can>
 
               {/* <SidebarLink
                 linkPath={"/analytics"}
@@ -482,4 +494,4 @@ function Sidebar({ sidebarOpen, setSidebarOpen }: any) {
   );
 }
 
-export default Sidebar;
+export default observer(Sidebar);
