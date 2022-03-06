@@ -25,7 +25,7 @@ class Agent {
   }
 
   get localeURL() {
-    return `${this.baseURL}/locales/{{lng}}/{{ns}}.json`;
+    return `${this.baseURL}/lang/{{lng}}`;
   }
 
   get(url: string, withCreds = false) {

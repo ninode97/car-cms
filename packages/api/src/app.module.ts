@@ -13,14 +13,24 @@ import { AuthModule } from './auth/auth.module';
 import { CaslModule } from './casl/casl.module';
 import { RedisModule } from './redis/redis.module';
 import { REDIS } from './redis/redis.constants';
+import { I18nModule, I18nJsonParser } from 'nestjs-i18n';
+import { RedisClientType } from 'redis';
 import * as session from 'express-session';
 import * as passport from 'passport';
-import { RedisClientType } from 'redis';
-import { LangModule } from './lang/lang.module';
 import * as RedisStore from 'connect-redis';
+import * as path from 'path';
+import { LangModule } from './lang/lang.module';
 
 @Module({
   imports: [
+    I18nModule.forRoot({
+      fallbackLanguage: 'en',
+      parser: I18nJsonParser,
+      parserOptions: {
+        path: path.join(__dirname, '/lang/i18n/'),
+      },
+    }),
+    LangModule,
     RedisModule,
     CarModule,
     UserModule,
@@ -31,7 +41,6 @@ import * as RedisStore from 'connect-redis';
     CarHistoryModule,
     AuthModule,
     CaslModule,
-    LangModule,
   ],
   controllers: [AppController],
   providers: [AppService, PrismaService],
