@@ -5,7 +5,6 @@ import { formatDateString } from "../app/helpers";
 import { RootStoreContext } from "../app/stores/rootStore";
 import Datepicker from "../partials/actions/Datepicker";
 import FilterButton from "../partials/actions/FilterButton";
-import Banner from "../partials/Banner";
 import DashboardAvatars from "../partials/dashboard/DashboardAvatars";
 import WelcomeBanner from "../partials/dashboard/WelcomeBanner";
 import Header from "../partials/Header";
@@ -63,8 +62,6 @@ const DefaultPage: React.FC<DefaultPageProps> = ({ children }) => {
               {children}
             </div>
           </main>
-
-          <Banner />
         </div>
       </div>
     </React.Fragment>

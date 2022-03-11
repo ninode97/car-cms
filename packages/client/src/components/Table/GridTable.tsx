@@ -1,5 +1,5 @@
 import React from "react";
-import GridTableActions from "./GridTableActions";
+import GridTableAction from "./GridTableAction";
 import GridTableBody, { GridTableEntry } from "./GridTableBody";
 import GridTableHeader, { GridTableHeaderEntry } from "./GridTableHeader";
 
@@ -24,6 +24,7 @@ const GridTable: React.FC<GridTableProps> = ({ headers, entries }) => {
           </div>
         </div>
       </div>
+      <GridTableAction to={"/users/add"} />
     </div>
   );
 };

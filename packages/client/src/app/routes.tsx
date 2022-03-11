@@ -5,7 +5,9 @@ import InspectCar from "../pages/cars/InspectCar";
 import Dashboard from "../pages/Dashboard";
 import HistoryFeed from "../pages/feed/HistoryFeed";
 import Login from "../pages/Login";
+import UserAdd from "../pages/users/UserAdd";
 import UserGrid from "../pages/users/UserGrid";
+import ViewUser from "../pages/users/ViewUser";
 
 const getRouteElement = (element: JSX.Element, isLoggedIn: boolean) => {
   return isLoggedIn ? element : <Login />;
@@ -34,6 +36,14 @@ const routes = (isLoggedIn: boolean) => [
   {
     path: "/users",
     element: getRouteElement(<UserGrid />, isLoggedIn),
+  },
+  {
+    path: "/users/add",
+    element: getRouteElement(<UserAdd />, isLoggedIn),
+  },
+  {
+    path: "/users/:id",
+    element: getRouteElement(<ViewUser />, isLoggedIn),
   },
   // {
   //   path: '/app',

@@ -20,7 +20,7 @@ const GridTableBody: React.FC<GridTableBodyProps> = ({ entries }) => {
     <tbody>
       {entries.map((entry) => (
         <tr
-          onClick={() => navigate(`/user/${entry.id}`)}
+          onClick={() => navigate(`/users/${entry.id}`)}
           className="odd:bg-white even:bg-gray-50 border-b odd:dark:bg-gray-800 even:dark:bg-gray-700 dark:border-gray-600 hover:bg-indigo-100 cursor-pointer"
         >
           <td className="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white">
