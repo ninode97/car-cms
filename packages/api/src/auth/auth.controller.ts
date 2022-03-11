@@ -1,6 +1,5 @@
 import {
   BadRequestException,
-  Body,
   Controller,
   Get,
   Post,
@@ -13,8 +12,6 @@ import { LoggedInGuard } from 'src/logged-in.guard';
 
 import { AuthService } from './auth.service';
 import { Public } from './decorators/is-public.decorator';
-import { LoginUserDto } from './dto/login-user.dto';
-import { RegisterUserDto } from './dto/register-user.dto';
 
 @Controller('auth')
 export class AuthController {

@@ -9,6 +9,7 @@ import { UserService } from 'src/user/user.service';
 import { LoginUserDto } from './dto/login-user.dto';
 import { RegisterUserDto } from './dto/register-user.dto';
 import { User } from '@prisma/client';
+import IUserSession from './user.interface';
 
 @Injectable()
 export class AuthService {
@@ -26,13 +27,18 @@ export class AuthService {
     return user;
   }
 
-  async validateUser(payload: LoginUserDto) {
+  async validateUser(payload: LoginUserDto): Promise<IUserSession> {
     const user = await this.getUserByEmail(payload.email);
     if (!user || !(await compare(payload.password, user.hash))) {
       throw new UnauthorizedException('Incorrect username or password');
     }
-    const { hash: hash, ...userData } = user;
-    return userData;
+    return {
+      id: user.id,
+      name: user.name,
+      surname: user.surname,
+      email: user.email,
+      userRoleId: user.userRoleId,
+    };
   }
 
   async findById(id: number): Promise<Omit<User, 'hash'>> {

@@ -3,6 +3,7 @@ import { PassportSerializer } from '@nestjs/passport';
 
 import { AuthService } from './auth.service';
 import { User } from '@prisma/client';
+import IUserSession from './user.interface';
 
 @Injectable()
 export class AuthSerializer extends PassportSerializer {
@@ -18,7 +19,7 @@ export class AuthSerializer extends PassportSerializer {
 
   deserializeUser(
     payload: { id: number; role: string },
-    done: (err: Error, user: Omit<User, 'hash'>) => void,
+    done: (err: Error, user: IUserSession) => void,
   ) {
     this.authService
       .findById(payload.id)
