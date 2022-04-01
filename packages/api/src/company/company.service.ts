@@ -1,6 +1,11 @@
-import { Injectable } from '@nestjs/common';
+import {
+  ConflictException,
+  Injectable,
+  InternalServerErrorException,
+} from '@nestjs/common';
 import { Company, Prisma } from '@prisma/client';
 import { PrismaService } from 'src/prisma.service';
+import { CreateCompanyDto } from './dto/create-company.dto';
 
 @Injectable()
 export class CompanyService {
@@ -21,5 +26,20 @@ export class CompanyService {
       where,
       orderBy,
     });
+  }
+
+  async create(data: Prisma.CompanyUncheckedCreateInput) {
+    try {
+      const company = await this.prisma.company.create({
+        data,
+      });
+      return company;
+    } catch (error) {
+      console.log(error);
+      if (error.code === 'P2002') {
+        throw new ConflictException();
+      }
+      throw new InternalServerErrorException();
+    }
   }
 }

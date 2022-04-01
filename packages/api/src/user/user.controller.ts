@@ -16,6 +16,7 @@ import {
 } from 'class-transformer';
 import { Action, PrismaAppAbility } from 'src/casl/casl-ability.factory';
 import { CheckPolicies, PoliciesGuard } from 'src/casl/policy-handler';
+import { CreateUserDto } from './dto/create-user.dto';
 import { UsersRequestDto, UsersResponseDto, UserDto } from './dto/user.dto';
 import { UserService } from './user.service';
 
@@ -38,17 +39,34 @@ export class UserController {
   }
 
   @Post()
-  createUser() {
-    return {};
+  @UseGuards(PoliciesGuard)
+  @CheckPolicies((ability: PrismaAppAbility) =>
+    ability.can(Action.Create, 'User'),
+  )
+  async createUser(@Body() dto: CreateUserDto) {
+    const user = await this.userService.create(dto);
+    return {
+      user,
+    };
   }
 
   @Put('/:userId')
+  @UseGuards(PoliciesGuard)
+  @CheckPolicies((ability: PrismaAppAbility) =>
+    ability.can(Action.Update, 'User'),
+  )
   updateUser() {
+    console.log('update user');
     return {};
   }
 
   @Delete('/:userId')
+  @UseGuards(PoliciesGuard)
+  @CheckPolicies((ability: PrismaAppAbility) =>
+    ability.can(Action.Delete, 'User'),
+  )
   removeUser() {
+    console.log('remove user');
     return {};
   }
 

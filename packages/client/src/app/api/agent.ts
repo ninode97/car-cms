@@ -5,11 +5,24 @@ import {
   CarBrandResponse,
   CarModelResponse,
   CarsResponse,
+  CreateCarModelRequest,
+  CreateCarModelResponse,
   PostCar,
 } from "../models/car";
-import { GetCompaniesResponse } from "../models/company";
+import {
+  CreateCompanyRequest,
+  CreateCompanyResponse,
+  GetCompaniesResponse,
+} from "../models/company";
 import { LoginCredentials, LoginResponse } from "../models/general";
-import { UsersRequest, UsersResponse } from "../models/user";
+import {
+  CreateUserRequest,
+  CreateUserResponse,
+  DeleteUserResponse,
+  UpdateUserResponse,
+  UsersRequest,
+  UsersResponse,
+} from "../models/user";
 
 class Agent {
   private baseURL: string;
@@ -72,12 +85,12 @@ class Agent {
   registerResponseInterceptors() {
     axios.interceptors.response.use(undefined, (error) => {
       if (error.message === "Network Error" && !error.response) {
-        // toast.error("Network error - make sure API is running!");
+        ToastMessage("error", "Network Error");
         throw error;
       }
-      const { status } = error.response;
 
-      if (status === 500) {
+      if (error?.response?.status === 500) {
+        ToastMessage("error", "Internal Error");
         // toast.error("Server error - check the terminal for more info!");
       }
       throw error.response;
@@ -100,10 +113,16 @@ const Brand = {
 const Model = {
   get: (id: number): Promise<CarModelResponse> =>
     agent.get(`/brand/${id}/model`),
+  create: (dto: CreateCarModelRequest): Promise<CreateCarModelResponse> => {
+    return agent.post(`/brand/${dto.brandId}/model`, dto);
+  },
 };
 
 const Company = {
   get: (): Promise<GetCompaniesResponse> => agent.get(`/company`),
+  create: (dto: CreateCompanyRequest): Promise<CreateCompanyResponse> => {
+    return agent.post("/company", dto);
+  },
 };
 
 const General = {
@@ -126,11 +145,19 @@ const User = {
       const val = t[key];
       val && (searchObj[key] = val);
     });
-
     return agent.getWithParams(
       "/user",
       new URLSearchParams(searchObj).toString()
     );
+  },
+  create: (dto: CreateUserRequest): Promise<CreateUserResponse> => {
+    return agent.post("/user", dto);
+  },
+  update: (): Promise<UpdateUserResponse> => {
+    return agent.put("/user", {});
+  },
+  delete: (): Promise<DeleteUserResponse> => {
+    return agent.delete("/user");
   },
 };
 

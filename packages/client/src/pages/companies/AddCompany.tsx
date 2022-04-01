@@ -1,13 +1,11 @@
 import { observer } from "mobx-react-lite";
-import React, { useContext } from "react";
-import RoleSelector from "../../app/common/FormInputs/RoleSelector";
+import { useContext } from "react";
 import TextInput from "../../app/common/FormInputs/TextInput";
-import { UserRoleEnumeration } from "../../app/models/user";
 import { RootStoreContext } from "../../app/stores/rootStore";
 import DefaultPage from "../DefaultPage";
 
-const UserAdd = () => {
-  const { userStore } = useContext(RootStoreContext);
+const AddCompany = () => {
+  const { companyStore } = useContext(RootStoreContext);
 
   return (
     <DefaultPage>
@@ -16,39 +14,18 @@ const UserAdd = () => {
           <form
             onSubmit={(e) => {
               e.preventDefault();
-              userStore.create();
+              companyStore.create();
             }}
           >
             <div className="shadow sm:rounded-md sm:overflow-hidden">
               <div className="px-4 py-5 bg-white space-y-6 sm:p-6">
                 <div className="grid grid-cols-1 gap-6">
                   <TextInput
-                    value={userStore.userState.email || ""}
-                    onChange={(e) => userStore.onEmailChange(e)}
-                    label="Email"
-                    placeHolder="john@gmail.com"
-                    name="email"
-                  />
-                  <TextInput
-                    value={userStore.userState.name || ""}
-                    onChange={(e) => userStore.onNameChange(e)}
+                    value={companyStore.companyState.name || ""}
+                    onChange={(e) => companyStore.onNameChanged(e)}
                     label="Name"
-                    placeHolder="John"
+                    placeHolder="Fibaler UAB"
                     name="name"
-                  />
-                  <TextInput
-                    value={userStore.userState.surname || ""}
-                    onChange={(e) => userStore.onSurnameChange(e)}
-                    label="Surname"
-                    placeHolder="Dale"
-                    name="surname"
-                  />
-                  <RoleSelector
-                    onChange={(e) => userStore.onRoleIdChanged(e)}
-                    value={`${
-                      userStore.userState.userRoleId ||
-                      UserRoleEnumeration.REGULAR
-                    }`}
                   />
                 </div>
               </div>
@@ -68,4 +45,4 @@ const UserAdd = () => {
   );
 };
 
-export default observer(UserAdd);
+export default observer(AddCompany);

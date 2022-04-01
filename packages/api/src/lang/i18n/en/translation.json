@@ -4,7 +4,8 @@
         "dashboard": "Dashboard",
         "cars": "Cars",
         "feed": "Feed",
-        "users": "Users"
+        "users": "Users",
+        "companies": "Companies"
     },
     "user": {
         "grid": {
@@ -16,6 +17,7 @@
         }
     },
     "roles": {
+        "role": "Rolė",
         "administrator": "Admin",
         "moderator": "Moderator",
         "regular": "Regular"

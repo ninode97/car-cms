@@ -4,7 +4,8 @@
         "dashboard": "Pradžia",
         "cars": "Automobiliai",
         "feed": "Srautas",
-        "users": "Naudotojai"
+        "users": "Naudotojai",
+        "companies": "Įmonės"
     },
     "user": {
         "grid": {
@@ -16,6 +17,7 @@
         }
     },
     "roles": {
+        "role": "Rolė",
         "administrator": "Administratorius",
         "moderator": "Moderatorius",
         "regular": "Naudotojas"

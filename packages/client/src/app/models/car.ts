@@ -53,3 +53,8 @@ export type CarBrand = {
   id: number;
   name: string;
 };
+
+export type CreateCarModelRequest = Partial<CarModel>;
+export type CreateCarModelResponse = {
+  model: CarModel;
+};

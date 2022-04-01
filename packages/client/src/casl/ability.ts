@@ -35,7 +35,22 @@ function buildAnonymous(can: any, cannot: any) {
 }
 
 function buildAdmin(can: any, cannot: any) {
-  can(["read"], SubjectsEnumeration.User);
+  can(
+    ["manage", "create", "read", "update", "delete"],
+    SubjectsEnumeration.Brand
+  );
+  can(
+    ["manage", "create", "read", "update", "delete"],
+    SubjectsEnumeration.Model
+  );
+  can(
+    ["manage", "create", "read", "update", "delete"],
+    SubjectsEnumeration.Company
+  );
+  can(
+    ["manage", "create", "read", "update", "delete"],
+    SubjectsEnumeration.User
+  );
 }
 
 function buildRegular(can: any, cannot: any) {

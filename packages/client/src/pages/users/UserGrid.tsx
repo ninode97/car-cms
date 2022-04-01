@@ -35,13 +35,37 @@ const UserGrid = () => {
       {isLoading === true && <div>Loading...</div>}
       {data !== undefined && (
         <GridTable
+          onAddRoute={"/users/add"}
           headers={headers}
-          entries={data?.users.map((u) => ({
-            id: u.id,
-            email: u.email,
-            name: u.name,
-            lastname: u.surname,
-            role: t(roleTranslationMapper(u.userRoleId)),
+          entries={data?.users?.map((user) => ({
+            navigateTo: `/users/${user.id}`,
+            tds: [
+              {
+                isAction: false,
+                key: "email",
+                value: user.email,
+              },
+              {
+                isAction: false,
+                key: "name",
+                value: user.name,
+              },
+              {
+                isAction: false,
+                key: "surname",
+                value: user.surname,
+              },
+              {
+                isAction: false,
+                key: "userRoleId",
+                value: t(roleTranslationMapper(user.userRoleId)),
+              },
+              {
+                isAction: true,
+                key: "view",
+                value: t("grid.general.view"),
+              },
+            ],
           }))}
         />
       )}

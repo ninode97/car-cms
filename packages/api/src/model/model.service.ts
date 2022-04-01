@@ -1,4 +1,8 @@
-import { Injectable } from '@nestjs/common';
+import {
+  ConflictException,
+  Injectable,
+  InternalServerErrorException,
+} from '@nestjs/common';
 import { Model, Prisma } from '@prisma/client';
 import { PrismaService } from 'src/prisma.service';
 
@@ -21,5 +25,19 @@ export class ModelService {
       where,
       orderBy,
     });
+  }
+
+  async create(data: Prisma.ModelUncheckedCreateInput) {
+    try {
+      const model = await this.prisma.model.create({
+        data,
+      });
+      return model;
+    } catch (error) {
+      if (error.code === 'P2002') {
+        throw new ConflictException();
+      }
+      throw new InternalServerErrorException();
+    }
   }
 }

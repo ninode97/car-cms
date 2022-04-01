@@ -1,6 +1,6 @@
 import { observer } from "mobx-react-lite";
 import { useContext, useEffect } from "react";
-import { useLocation, useRoutes } from "react-router-dom";
+import { useLocation, useNavigate, useRoutes } from "react-router-dom";
 import routes from "./app/routes";
 import { RootStoreContext } from "./app/stores/rootStore";
 import { ToastContainer, toast } from "react-toastify";
@@ -21,12 +21,14 @@ export const ToastMessage = (
 function App() {
   const rootStore = useContext(RootStoreContext);
   const location = useLocation();
+  const navigate = useNavigate();
   const routing = useRoutes(routes(rootStore.commonStore.isLoggedIn));
 
   useEffect(() => {
     const root = (document as any).querySelector("html");
     root.style.scrollBehavior = "auto";
     (window as any).scroll({ top: 0 });
+    !rootStore.commonStore.isLoggedIn && navigate("/");
   }, [location.pathname]); // triggered on route change
 
   const ability = buildAbilityFor(rootStore.commonStore.currentRole);

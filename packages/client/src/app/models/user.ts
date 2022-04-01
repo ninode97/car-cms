@@ -47,3 +47,10 @@ export type UsersRequest = {
 export type UsersResponse = {
   users: User[];
 };
+
+export type CreateUserRequest = Partial<User>;
+export type CreateUserResponse = {
+  user: User;
+};
+export type UpdateUserResponse = {};
+export type DeleteUserResponse = {};

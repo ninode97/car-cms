@@ -10,3 +10,9 @@ export type Company = {
   userId: number;
   car?: Car[];
 };
+
+export type CreateCompanyRequest = Partial<Company>;
+
+export type CreateCompanyResponse = {
+  company: Company;
+};

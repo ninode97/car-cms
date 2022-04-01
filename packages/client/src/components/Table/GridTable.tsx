@@ -1,15 +1,20 @@
 import React from "react";
 import GridTableAction from "./GridTableAction";
-import GridTableBody, { GridTableEntry } from "./GridTableBody";
+import GridTableBody, { GridTableTr } from "./GridTableBody";
 import GridTableHeader, { GridTableHeaderEntry } from "./GridTableHeader";
 
 type GridTableProps = {
   children?: JSX.Element[] | JSX.Element;
   headers: GridTableHeaderEntry[];
-  entries: GridTableEntry[];
+  entries: GridTableTr[];
+  onAddRoute: string;
 };
 
-const GridTable: React.FC<GridTableProps> = ({ headers, entries }) => {
+const GridTable: React.FC<GridTableProps> = ({
+  headers,
+  entries,
+  onAddRoute,
+}) => {
   return (
     <div className="grid">
       <div className="flex flex-col">
@@ -24,7 +29,7 @@ const GridTable: React.FC<GridTableProps> = ({ headers, entries }) => {
           </div>
         </div>
       </div>
-      <GridTableAction to={"/users/add"} />
+      <GridTableAction to={onAddRoute} />
     </div>
   );
 };

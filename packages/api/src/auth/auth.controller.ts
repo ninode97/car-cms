@@ -21,9 +21,8 @@ export class AuthController {
   @UseGuards(LocalGuard)
   @Post('login')
   loginUser(@Req() req) {
-    const user = req.session?.passport?.user;
-    if (!user) throw new BadRequestException();
-    return user;
+    if (!req.user) throw new BadRequestException();
+    return req.user;
   }
 
   @UseGuards(LoggedInGuard)

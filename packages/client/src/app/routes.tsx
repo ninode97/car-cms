@@ -2,9 +2,14 @@ import { Navigate, Outlet } from "react-router-dom";
 import AddCar from "../pages/cars/AddCar";
 import CarGrid from "../pages/cars/CarGrid";
 import InspectCar from "../pages/cars/InspectCar";
+import AddCompany from "../pages/companies/AddCompany";
+import CompaniesGrid from "../pages/companies/CompaniesGrid";
+import ViewCompany from "../pages/companies/ViewCompany";
 import Dashboard from "../pages/Dashboard";
 import HistoryFeed from "../pages/feed/HistoryFeed";
 import Login from "../pages/Login";
+import CarBrandManagement from "../pages/settings/CarBrandManagement";
+import SettingsPage from "../pages/settings/SettingsPage";
 import UserAdd from "../pages/users/UserAdd";
 import UserGrid from "../pages/users/UserGrid";
 import ViewUser from "../pages/users/ViewUser";
@@ -45,31 +50,26 @@ const routes = (isLoggedIn: boolean) => [
     path: "/users/:id",
     element: getRouteElement(<ViewUser />, isLoggedIn),
   },
-  // {
-  //   path: '/app',
-  //   element: isLoggedIn ? <></> : <Navigate to="/login" />,
-  //   children: [
-  //     { path: '/dashboard', element: <Dashboard /> },
-  //     { path: '/account', element: <Account /> },
-  //     { path: '/', element: <Navigate to="/app/dashboard" /> },
-  //     {
-  //       path: 'member',
-  //       element: <Outlet />,
-  //       children: [
-  //         { path: '/', element: <MemberGrid /> },
-  //         { path: '/add', element: <AddMember /> },
-  //       ],
-  //     },
-  //   ],
-  // },
-  // {
-  //   path: '/',
-  //   element: !isLoggedIn ? <MainLayout /> : <Navigate to="/app/dashboard" />,
-  //   children: [
-  //     { path: 'login', element: <Login /> },
-  //     { path: '/', element: <Navigate to="/login" /> },
-  //   ],
-  // },
+  {
+    path: "/companies",
+    element: getRouteElement(<CompaniesGrid />, isLoggedIn),
+  },
+  {
+    path: "/companies/:id",
+    element: getRouteElement(<ViewCompany />, isLoggedIn),
+  },
+  {
+    path: "/companies/add",
+    element: getRouteElement(<AddCompany />, isLoggedIn),
+  },
+  {
+    path: "/settings",
+    element: getRouteElement(<SettingsPage />, isLoggedIn),
+  },
+  {
+    path: "/settings/brands",
+    element: getRouteElement(<CarBrandManagement />, isLoggedIn),
+  },
 ];
 
 export default routes;
