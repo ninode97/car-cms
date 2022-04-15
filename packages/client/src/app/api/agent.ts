@@ -26,8 +26,10 @@ import {
 
 class Agent {
   private baseURL: string;
+  private apiPrefix: string;
   constructor() {
     this.baseURL = import.meta.env.API_HOST as string;
+    this.apiPrefix = "/api";
     axios.defaults.withCredentials = true;
     axios.defaults.baseURL = this.baseURL;
     this.registerRequestInterceptors();
@@ -43,21 +45,27 @@ class Agent {
   }
 
   get(url: string) {
+    url = `${this.apiPrefix}/${url}`;
     return axios.get(url, {}).then(this.responseBody);
   }
   getWithParams(url: string, params: any) {
+    url = `${this.apiPrefix}/${url}`;
     return axios.get(url, { params }).then(this.responseBody);
   }
   post(url: string, body: {}) {
+    url = `${this.apiPrefix}/${url}`;
     return axios.post(url, body, {}).then(this.responseBody);
   }
   put(url: string, body: {}) {
+    url = `${this.apiPrefix}/${url}`;
     return axios.put(url, body, {}).then(this.responseBody);
   }
   delete(url: string) {
+    url = `${this.apiPrefix}/${url}`;
     return axios.delete(url, {}).then(this.responseBody);
   }
   postForm(url: string, file: Blob) {
+    url = `${this.apiPrefix}/${url}`;
     let formData = new FormData();
     formData.append("File", file);
     return axios
