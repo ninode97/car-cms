@@ -8,19 +8,19 @@ import { RootStoreContext } from "../../app/stores/rootStore";
 import BrandList from "./BrandList";
 
 const CarBrandManagement = () => {
-  const { brandManagement } = useContext(RootStoreContext);
+ // const { brandManagement } = useContext(RootStoreContext);
   useEffect(() => {
-    brandManagement.loadBrands();
+    //brandManagement.loadBrands();
   }, []);
 
   return (
     <DefaultPage>
       <div className="md:grid md:grid-cols-1 md:gap-6 mb-8">
-        {brandManagement.brandResponse?.isLoading ? (
+        {/* {brandManagement.brandResponse?.isLoading ? (
           "Loading brands"
         ) : (
           <BrandList brands={brandManagement.brandResponse?.data?.data || []} />
-        )}
+        )} */}
       </div>
     </DefaultPage>
   );

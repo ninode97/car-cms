@@ -20,6 +20,7 @@ export class RootStore {
     this.userStore = new UserStore(this);
     this.companyStore = new CompanyStore(this);
     // this.brandManagement = new CarBrandManagementStore(this);
+    
   }
 }
 
