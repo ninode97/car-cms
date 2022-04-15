@@ -27,7 +27,7 @@ import {
 class Agent {
   private baseURL: string;
   constructor() {
-    this.baseURL = "http://127.0.0.1:5000";
+    this.baseURL = import.meta.env.API_HOST as string;
     axios.defaults.withCredentials = true;
     axios.defaults.baseURL = this.baseURL;
     this.registerRequestInterceptors();
